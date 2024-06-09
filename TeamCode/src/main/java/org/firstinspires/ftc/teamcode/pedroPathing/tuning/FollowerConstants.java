@@ -29,7 +29,7 @@ public class FollowerConstants {
 
     // Large translational PIDF coefficients
     public static CustomPIDFCoefficients largeTranslationalPIDFCoefficients = new CustomPIDFCoefficients(
-            0.85,
+            0.1,
             0,
             0,
             0);
@@ -49,7 +49,7 @@ public class FollowerConstants {
 
     // Small translational PIDF coefficients
     public static CustomPIDFCoefficients smallTranslationalPIDFCoefficients = new CustomPIDFCoefficients(
-            0.215,
+            0.3,
             0,
             0.01,
             0);
@@ -79,7 +79,7 @@ public class FollowerConstants {
 
     // Small heading error PIDF coefficients
     public static CustomPIDFCoefficients smallHeadingPIDFCoefficients = new CustomPIDFCoefficients(
-            2.1,
+            5,
             0,
             0.08,
             0);
@@ -89,9 +89,9 @@ public class FollowerConstants {
 
     // Large drive PIDF coefficients
     public static CustomPIDFCoefficients largeDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.0075,
+            0.025,
             0,
-            0.000001,
+            0.00001,
             0);
 
     // Feed forward constant added on to the large drive PIDF
@@ -102,7 +102,7 @@ public class FollowerConstants {
 
     // Small drive PIDF coefficients
     public static CustomPIDFCoefficients smallDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.007,
+            0.02,
             0,
             0.000005,
             0);
