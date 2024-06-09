@@ -29,7 +29,7 @@ public class FollowerConstants {
 
     // Large translational PIDF coefficients
     public static CustomPIDFCoefficients largeTranslationalPIDFCoefficients = new CustomPIDFCoefficients(
-            0.1,
+            0.85,
             0,
             0,
             0);
@@ -39,7 +39,7 @@ public class FollowerConstants {
 
     // Large translational Integral
     public static CustomPIDFCoefficients largeTranslationalIntegral = new CustomPIDFCoefficients(
-            0,
+            0.275,
             0,
             0,
             0);
@@ -49,7 +49,7 @@ public class FollowerConstants {
 
     // Small translational PIDF coefficients
     public static CustomPIDFCoefficients smallTranslationalPIDFCoefficients = new CustomPIDFCoefficients(
-            0.3,
+            0.21,
             0,
             0.01,
             0);
@@ -66,7 +66,7 @@ public class FollowerConstants {
 
     // Large heading error PIDF coefficients
     public static CustomPIDFCoefficients largeHeadingPIDFCoefficients = new CustomPIDFCoefficients(
-            1,
+            -0.845,
             0,
             0,
             0);
@@ -79,9 +79,9 @@ public class FollowerConstants {
 
     // Small heading error PIDF coefficients
     public static CustomPIDFCoefficients smallHeadingPIDFCoefficients = new CustomPIDFCoefficients(
-            5,
+            -2.275,
             0,
-            0.08,
+            0,
             0);
 
     // Feed forward constant added on to the small heading PIDF
@@ -89,9 +89,9 @@ public class FollowerConstants {
 
     // Large drive PIDF coefficients
     public static CustomPIDFCoefficients largeDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.025,
+            0.0075,
             0,
-            0.00001,
+            0.0002,
             0);
 
     // Feed forward constant added on to the large drive PIDF
@@ -102,7 +102,7 @@ public class FollowerConstants {
 
     // Small drive PIDF coefficients
     public static CustomPIDFCoefficients smallDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.02,
+            0.007,
             0,
             0.000005,
             0);
@@ -131,7 +131,7 @@ public class FollowerConstants {
     // Decreasing this will cause the deceleration at the end of the Path to be slower, making the
     // robot slower but reducing risk of end-of-path overshoots or localization slippage.
     // This can be set individually for each Path, but this is the default.
-    public static double zeroPowerAccelerationMultiplier = 2.45;
+    public static double zeroPowerAccelerationMultiplier = 2.35;
 
     // When the robot is at the end of its current Path or PathChain and the velocity goes below
     // this value, then end the Path. This is in inches/second.

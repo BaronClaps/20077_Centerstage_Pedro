@@ -48,9 +48,9 @@ public class ThreeWheelLocalizer extends Localizer {
     private Pose rightEncoderPose;
     private Pose strafeEncoderPose;
     private double totalHeading;
-    public static double FORWARD_TICKS_TO_INCHES = 0.00052189;//8192 * 1.37795 * 2 * Math.PI * 0.5008239963;
-    public static double STRAFE_TICKS_TO_INCHES = 0.00052189;//8192 * 1.37795 * 2 * Math.PI * 0.5018874659;
-    public static double TURN_TICKS_TO_RADIANS = 0.00053717;//8192 * 1.37795 * 2 * Math.PI * 0.5;
+    public static double FORWARD_TICKS_TO_INCHES = 0.0029538589785651718;
+    public static double STRAFE_TICKS_TO_INCHES = 0.0029405800738030894;
+    public static double TURN_TICKS_TO_RADIANS = 0.0029502091090332044;
 
     /**
      * This creates a new ThreeWheelLocalizer from a HardwareMap, with a starting Pose at (0,0)
@@ -71,21 +71,21 @@ public class ThreeWheelLocalizer extends Localizer {
      */
     public ThreeWheelLocalizer(HardwareMap map, Pose setStartPose) {
         // TODO: replace these with your encoder positions
-        leftEncoderPose = new Pose(-5, -3.59375, 0);
-        rightEncoderPose = new Pose(5, -3.59375, 0);
-        strafeEncoderPose = new Pose(0.8125, -2.09375, Math.toRadians(90));
+        leftEncoderPose = new Pose(-0.75,-7.5, 0);
+        rightEncoderPose = new Pose(-0.75, 7.5, 0);
+        strafeEncoderPose = new Pose(-6.5, -0.25, Math.toRadians(270));
 
         hardwareMap = map;
 
         // TODO: replace these with your encoder ports
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lf"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rb"));
-        strafeEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rf"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lF"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rF"));
+        strafeEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lB"));
 
         // TODO: reverse any encoders necessary
-        leftEncoder.setDirection(Encoder.REVERSE);
-        rightEncoder.setDirection(Encoder.FORWARD);
-        strafeEncoder.setDirection(Encoder.FORWARD);
+        leftEncoder.setDirection(Encoder.FORWARD);
+        rightEncoder.setDirection(Encoder.REVERSE);
+        strafeEncoder.setDirection(Encoder.REVERSE);
 
         setStartPose(setStartPose);
         timer = new NanoTimer();
