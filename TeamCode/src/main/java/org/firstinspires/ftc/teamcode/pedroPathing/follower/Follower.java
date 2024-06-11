@@ -167,6 +167,7 @@ public class Follower {
         rightFront = hardwareMap.get(DcMotorEx.class, "rF");
 
         // TODO: Make sure that this is the direction your motors need to be reversed in.
+        //Since Reversed wrong side we need neg heading and zeropoweraccel values
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
