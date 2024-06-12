@@ -254,7 +254,6 @@ public class Blue_Close_Two_Five extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        gear.gearUpdate();
         
 
         autonomousPathUpdate();
