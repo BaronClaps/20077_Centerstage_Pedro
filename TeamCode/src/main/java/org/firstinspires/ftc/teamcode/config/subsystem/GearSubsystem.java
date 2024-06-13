@@ -20,9 +20,12 @@ import com.qualcomm.robotcore.util.Range;
 public class GearSubsystem {
     public DcMotorEx gear;
     private PIDController controller;
+    public static double p = 0.0215, i = 0, d = 0.0005;
+    public static double f = 0.05;
+    public static int gearTarget = 0;
+    public static double ticks_in_degree = 7.7395;
+    public int gearPos;
 
-
-    int gearPos;
     //private Servo wheelServo;
 
     public GearSubsystem(HardwareMap hardwareMap) {
@@ -30,10 +33,28 @@ public class GearSubsystem {
         gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
 
+
         //wheelServo = hardwareMap.get(Servo.class, "WheelServo");
     }
 
-    public void gearTarget(int gearTarget) {
+    public void gearTarget(int gtarget){
+        gearTarget = gtarget;
+    }
+
+   public void gearPIDUpdate() {
+        controller = new PIDController(p,i,d);
+        int gearPos = gear.getCurrentPosition();
+        double pid = controller.calculate(gearPos, gearTarget);
+        double ff = Math.cos(Math.toRadians(gearTarget / ticks_in_degree)) * f;
+
+        double power = pid + ff;
+
+        //power = Range.clip(power, -0.7, 0.7);
+
+        gear.setPower(power);
+    }
+
+    /*public void gearTarget(int gearTarget) {
     double p = 0.0215, i = 0, d = 0.0005;
     double f = 0.05;
     double ticks_in_degree = 7.7395; // (pulses per revolution) / (degrees in revolution)
@@ -58,20 +79,8 @@ public class GearSubsystem {
 
 
     }
-    }
+    }*/
 
- /*   public void gearUpdate() {
-        int armPos = gear.getCurrentPosition();
-        double pid = controller.calculate(armPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        power = Range.clip(power, -0.7, 0.7);
-
-        gear.setPower(power);
-    }
-*/
     //------------------------------Ground Position------------------------------//
     public void groundGear() {
                 gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -18,7 +18,7 @@ public class PresetSubsystem {
         this.gear = gearSubsystem;
     }
 
-
+/*
     //------------------------------ Start Sequence ------------------------------//
     public void StartPos() {
         ClawStartPos();
@@ -59,17 +59,17 @@ public class PresetSubsystem {
     public void GearScoringPos() {
         gear.resetGear();
         gear.gearTarget(750);
-     
+
     }
 
     public void LiftScoringPos() {
-        lift.liftExtend_Scoring();
+        //lift.liftExtend_Scoring();
         //lift.waitForLift(),
         //lift.stopLift()
     }
 
     public void WhiteLiftScoringPos() {
-        lift.liftExtend_WhiteScoring();
+        //lift.liftExtend_WhiteScoring();
     }
 
     public void ClawScoringPos() {
@@ -93,12 +93,12 @@ public class PresetSubsystem {
     }
 
     public void LiftGroundPos() {
-        lift.liftRetract_Scoring();
+        //lift.liftRetract_Scoring();
     }
 
     public void ClawGroundPos() {
         claw.groundClaw();
         claw.openClaws();
     }
-
+*/
 }

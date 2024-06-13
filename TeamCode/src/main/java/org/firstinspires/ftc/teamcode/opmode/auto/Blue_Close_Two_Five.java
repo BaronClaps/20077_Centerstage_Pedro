@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.config.pedroPathing.util.AutoActionSchedul
 @Autonomous(name = "Blue Close 2+5", group = "Blue")
 public class Blue_Close_Two_Five extends OpMode {
 
-    private Timer pathTimer, opmodeTimer, scanTimer;
+    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer;
     private String navigation;
     public ClawSubsystem claw;
     public GearSubsystem gear;
@@ -65,7 +65,7 @@ public class Blue_Close_Two_Five extends OpMode {
     private Path scoreSpikeMark, initialScoreOnBackdrop;
     private PathChain cycleStackTo, cycleStackBack, cycleStackToBezier, cycleStackBackBezier;
 
-    private int pathState;
+    private int pathState, actionState, clawState, gearState, liftState;
 
 
     public void setBackdropGoalPose() {
@@ -144,11 +144,10 @@ public class Blue_Close_Two_Five extends OpMode {
                 break;
             case 11:
              if (pathTimer.getElapsedTimeSeconds() > 3) {
-                    gear.resetGear();
                     claw.openLClaw();
                 }
                 if (pathTimer.getElapsedTimeSeconds() > 4) {
-                    gear.gearTarget(750);
+                    setActionState(1);
                     setPathState(12);
                 }
                 break;
@@ -156,18 +155,19 @@ public class Blue_Close_Two_Five extends OpMode {
                 if(!follower.isBusy()) {
                     follower.setMaxPower(0.5);
                     follower.followPath(initialScoreOnBackdrop);
-                    setPathState(13);
                 }
+                claw.closeLClaw();
+                setPathState(13);
                 break;
             case 13:
                 follower.holdPoint(new BezierPoint(initialScoreOnBackdrop.getLastControlPoint()), initialBackdropGoalPose.getHeading());
-                presets.ScoringPos();
                 setPathState(14);
 
                 break;
             case 14:
-
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    claw.openRClaw();
+                    setActionState(2);
                     setPathState(15);
                 }
                 break;
@@ -245,11 +245,114 @@ public class Blue_Close_Two_Five extends OpMode {
                 break;
         }
     }
-    public void setPathState(int state) {
-        pathState = state;
+
+    public void autonomousActionUpdate() {
+        switch (actionState) {
+            case 0:
+                claw.closeClaws();
+                gear.gearTarget(-600);
+                //lift.liftTarget(10);
+                claw.groundClaw();
+                setActionState(-1);
+                break;
+            case 1:
+                gear.gearTarget(150);
+                /*if (gear.gearPos < 760 && gear.gearPos > 740) {
+                    lift.liftTarget(500);
+                    setClawState(1);
+                }*/
+                setActionState(-1);
+                break;
+            case 2:
+                gear.gearTarget(-600);
+                //lift.liftTarget(0);
+                claw.groundClaw();
+                claw.openClaws();
+                setActionState(-1);
+                break;
+        }
+    }
+
+    public void clawUpdate() {
+        switch (clawState) {
+            case 0:
+                claw.groundClaw();
+                claw.closeClaws();
+                setClawState(-1);
+                break;
+            case 1:
+                claw.scoringClaw();
+                setClawState(-1);
+                break;
+            case 2:
+                claw.groundClaw();
+                claw.openClaws();
+                setClawState(-1);
+                break;
+        }
+    }
+
+    /*public void gearUpdate() {
+        switch (gearState) {
+            case 10:
+                //gear.startGear();
+                gear.resetGear();
+                gear.gearTarget(-500);
+                break;
+            case 11:
+                gear.resetGear();
+                gear.scoringGear();
+                break;
+            case 12:
+                gear.groundGear();
+                break;
+
+        }
+    }*/
+
+    /*public void liftUpdate() {
+        switch (liftState) {
+            case 10:
+                lift.stopLift();
+                lift.resetLift();
+                break;
+            case 11:
+                lift.liftExtend_Scoring();
+                break;
+            case 12:
+                lift.liftRetract_Scoring();
+                break;
+
+        }
+    }*/
+
+
+
+    public void setPathState(int pState) {
+        pathState = pState;
         pathTimer.resetTimer();
         autonomousPathUpdate();
     }
+
+    public void setActionState(int aState) {
+        actionState = aState;
+        pathTimer.resetTimer();
+        autonomousActionUpdate();
+    }
+
+    public void setClawState(int cState) {
+        clawState = cState;
+    }
+
+    /*public void setGearState(int gState) {
+        gearState = gState;
+    }*/
+
+    /*public void setLiftState(int lState) {
+        liftState = lState;
+    }*/
+
+
 
     @Override
     public void loop() {
@@ -257,8 +360,13 @@ public class Blue_Close_Two_Five extends OpMode {
         
 
         autonomousPathUpdate();
+        autonomousActionUpdate();
+        clawUpdate();
+        //lift.liftPIDUpdate();
+        gear.gearPIDUpdate();
 
         telemetry.addData("path state", pathState);
+        telemetry.addData("gear pos", gear.gearPos);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
@@ -268,6 +376,7 @@ public class Blue_Close_Two_Five extends OpMode {
     @Override
     public void init() {
         pathTimer = new Timer();
+        actionTimer = new Timer();
         opmodeTimer = new Timer();
         scanTimer = new Timer();
 
@@ -298,7 +407,7 @@ public class Blue_Close_Two_Five extends OpMode {
         buildPaths();
         opmodeTimer.resetTimer();
         setPathState(10);
-        presets.StartPos();
+        setActionState(0);
     }
 
     @Override

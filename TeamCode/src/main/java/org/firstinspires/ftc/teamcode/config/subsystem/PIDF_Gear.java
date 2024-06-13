@@ -14,12 +14,12 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp
 public class PIDF_Gear extends OpMode {
     private PIDController controller;
-    public static double p = 0.0215, i = 0, d = 0.0005;
-    public static double f = 0.05;
+    public static double p = 0.07, i = 0, d = 0.0005;
+    public static double f = 0.325;
 
     public static int target = 0;
 
-    private final double ticks_in_degree = 7.7395; // (pulses per revolution) / (degrees in revolution)
+    private final double ticks_in_degree = 2.09222222; // (pulses per revolution) / (degrees in revolution)
 
     int armPos;
 
@@ -30,7 +30,7 @@ public class PIDF_Gear extends OpMode {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        gear =  hardwareMap.get(DcMotorEx.class, "gear");
+        gear =  hardwareMap.get(DcMotorEx.class, "lift");
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -42,9 +42,6 @@ public class PIDF_Gear extends OpMode {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
-
-
-        power = Range.clip(power, -0.7, 0.7);
 
         gear.setPower(power);
 
