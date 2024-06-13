@@ -22,7 +22,7 @@ public class GearSubsystem {
     private PIDController controller;
     public static double p = 0.0215, i = 0, d = 0.0005;
     public static double f = 0.05;
-    public static int gearTarget = 0;
+    public int gearTarget = 0;
     public static double ticks_in_degree = 7.7395;
     public int gearPos;
 
@@ -43,13 +43,11 @@ public class GearSubsystem {
 
    public void gearPIDUpdate() {
         controller = new PIDController(p,i,d);
-        int gearPos = gear.getCurrentPosition();
+        int gearPos = gear.getCurrentPosition() + 600;
         double pid = controller.calculate(gearPos, gearTarget);
         double ff = Math.cos(Math.toRadians(gearTarget / ticks_in_degree)) * f;
 
         double power = pid + ff;
-
-        //power = Range.clip(power, -0.7, 0.7);
 
         gear.setPower(power);
     }

@@ -250,13 +250,13 @@ public class Blue_Close_Two_Five extends OpMode {
         switch (actionState) {
             case 0:
                 claw.closeClaws();
-                gear.gearTarget(-600);
+                gear.gearTarget(0);
                 //lift.liftTarget(10);
                 claw.groundClaw();
                 setActionState(-1);
                 break;
             case 1:
-                gear.gearTarget(150);
+                gear.gearTarget(750);
                 /*if (gear.gearPos < 760 && gear.gearPos > 740) {
                     lift.liftTarget(500);
                     setClawState(1);
@@ -264,7 +264,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setActionState(-1);
                 break;
             case 2:
-                gear.gearTarget(-600);
+                gear.gearTarget(0);
                 //lift.liftTarget(0);
                 claw.groundClaw();
                 claw.openClaws();
@@ -366,7 +366,9 @@ public class Blue_Close_Two_Five extends OpMode {
         gear.gearPIDUpdate();
 
         telemetry.addData("path state", pathState);
-        telemetry.addData("gear pos", gear.gearPos);
+        telemetry.addData("gear pos var", gear.gearPos);
+        telemetry.addData("gear pos", gear.gear.getCurrentPosition());
+        telemetry.addData("gear tar", gear.gearTarget);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
