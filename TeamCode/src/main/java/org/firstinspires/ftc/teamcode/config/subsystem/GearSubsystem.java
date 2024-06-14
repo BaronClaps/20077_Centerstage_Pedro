@@ -32,6 +32,9 @@ public class GearSubsystem {
         gear = hardwareMap.get(DcMotorEx.class, "gear");
         gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
+        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
 
         //wheelServo = hardwareMap.get(Servo.class, "WheelServo");
@@ -43,7 +46,7 @@ public class GearSubsystem {
 
    public void gearPIDUpdate() {
         controller = new PIDController(p,i,d);
-        int gearPos = gear.getCurrentPosition() + 600;
+        int gearPos = gear.getCurrentPosition();
         double pid = controller.calculate(gearPos, gearTarget);
         double ff = Math.cos(Math.toRadians(gearTarget / ticks_in_degree)) * f;
 
@@ -52,35 +55,28 @@ public class GearSubsystem {
         gear.setPower(power);
     }
 
-    /*public void gearTarget(int gearTarget) {
-    double p = 0.0215, i = 0, d = 0.0005;
-    double f = 0.05;
-    double ticks_in_degree = 7.7395; // (pulses per revolution) / (degrees in revolution)
-    double pid;
-    double ff;
-    double power;
-
-    PIDController controller;
-    controller = new PIDController(p,i,d);
-    gear.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-    while(gearPos != gearTarget+-5 ){
-        int target = gearTarget;
-        controller.setPID(p, i, d);
-        int gearPos = gear.getCurrentPosition();
-        pid = controller.calculate(gearPos, target);
-        ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-        power = pid + ff;
-        power = Range.clip(power, -.75, .75);
-
-        gear.setPower(power);
-
-
+    public void groundGear(){
+        gearTarget(0);
     }
-    }*/
+
+    public void scoringGear() {
+        gearTarget(750);
+    }
+
+    public void white54() {
+        gearTarget(96);
+    }
+
+    public void white32() {
+        gearTarget(148);
+    }
+
+    public void white1() {
+        gearTarget(96);
+    }
 
     //------------------------------Ground Position------------------------------//
-    public void groundGear() {
+    /*public void groundGear() {
                 gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 gear.setTargetPosition(-760);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -18,11 +18,13 @@ public class ClawSubsystem {
     double closedR = 0.37;
     double openL = 0.45;//.42
     double openR = 0.25;//.28
+    double startClaw = 0.174;
     double groundClaw = 0.815;
     double scoringClaw = 0.25;
-    double whiteGroundClaw = 0.85;
+    double white54 = 0.835;
+    double white32 = 0.86;
+    double white1 = 0.835;
     double whiteScoringClaw = 0.75; //.725
-    boolean autonomous;
 
     public ClawSubsystem(HardwareMap hardwareMap) {
         pivot = hardwareMap.get(Servo.class, "pivot");
@@ -61,6 +63,9 @@ public class ClawSubsystem {
     }
 
     //------------------------------Claw Rotate------------------------------//
+    public void startClaw() {
+        pivot.setPosition(startClaw);
+    }
 
     public void groundClaw() {
         pivot.setPosition(groundClaw);
@@ -70,11 +75,21 @@ public class ClawSubsystem {
         pivot.setPosition(scoringClaw);
     }
 
+    public void white54() {
+        pivot.setPosition(white54);
+    }
+
+    public void white32() {
+        pivot.setPosition(white32);
+    }
+
+    public void white1() {
+        pivot.setPosition(white1);
+    }
+
+
     public void whiteScoringClaw() {
         pivot.setPosition(scoringClaw);
     }
 
-    public void whiteGroundClaw() {
-        pivot.setPosition(whiteGroundClaw);
-    }
 }

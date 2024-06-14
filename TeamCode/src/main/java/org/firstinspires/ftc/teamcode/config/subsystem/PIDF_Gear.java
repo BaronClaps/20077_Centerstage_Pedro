@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
@@ -14,7 +15,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp
 public class PIDF_Gear extends OpMode {
     private PIDController controller;
-    public static double p = 0.07, i = 0, d = 0.0005;
+    public static double p = 0.07, i = 0, d =0.0005;
     public static double f = 0.325;
 
     public static int target = 0;
@@ -32,6 +33,8 @@ public class PIDF_Gear extends OpMode {
 
         gear =  hardwareMap.get(DcMotorEx.class, "lift");
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
     }
 
     @Override
