@@ -23,7 +23,6 @@ public class LiftSubsystem {
         lift = hardwareMap.get(DcMotorEx.class, "lift");
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //lift.setDirection(DcMotorSimple.Direction.REVERSE);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 /*
@@ -44,7 +43,7 @@ public class LiftSubsystem {
     //------------------------------ Lift Extend ------------------------------//
     public void liftExtend_Scoring() {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-100);//500
+                lift.setTargetPosition(-500);//500
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }
@@ -59,7 +58,7 @@ public class LiftSubsystem {
     //------------------------------ Lift Retract ------------------------------//
     public void liftRetract_Scoring() {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(100);//500
+                lift.setTargetPosition(500);//500
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }
