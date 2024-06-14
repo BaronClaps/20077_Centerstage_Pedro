@@ -311,17 +311,14 @@ public class Blue_Close_Two_Five extends OpMode {
     public void liftUpdate() {
         switch (liftState) {
             case 0:
-                lift.stopLift();
                 setLiftState(-1);
                 break;
             case 1:
-                lift.liftExtend_Scoring();
-                if(!lift.lift.isBusy()) {
-                    setLiftState(-1);
-                }
+                lift.liftTarget(100);
+                setLiftState(-1);
                 break;
             case 2:
-                lift.liftRetract_Scoring();
+                lift.liftTarget(0);
                 if(!lift.lift.isBusy()) {
                     setLiftState(-1);
                 }
@@ -367,15 +364,15 @@ public class Blue_Close_Two_Five extends OpMode {
         autonomousActionUpdate();
         clawUpdate();
         liftUpdate();
-        //lift.liftPIDUpdate();
-        gear.gearPIDUpdate();
+        lift.liftPIDUpdate();
+        //gear.gearPIDUpdate();
 
         telemetry.addData("path state", pathState);
         telemetry.addData("gear pos var", gear.gearPos);
         telemetry.addData("gear pos", gear.gear.getCurrentPosition());
         telemetry.addData("gear tar", gear.gearTarget);
 
-        telemetry.addData("lift pos var", lift.gearPos);
+        telemetry.addData("lift pos var", lift.armPos);
         telemetry.addData("lift pos", lift.lift.getCurrentPosition());
         telemetry.addData("lift tar", lift.liftTarget);
         telemetry.addData("x", follower.getPose().getX());
