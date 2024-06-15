@@ -52,7 +52,7 @@ public class GearSubsystem {
 
         double power = Gpid + Gff;
 
-        gear.setPower(power);
+        gear.setPower(power * 0.7);
     }
 
     public void groundGear(){
