@@ -12,20 +12,22 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class LiftSubsystem {
     public DcMotorEx lift;
+    /*
     private PIDController controller;
     public static double p = 0.05, i = 0, d = 0.0005;
     public static double f = 0.325;
     public int liftTarget = 0;
     public static double ticks_in_degree = 2.09222222;
-    public int armPos;
+    public int armPos;*/
 
     public LiftSubsystem(HardwareMap hardwareMap) {
         lift = hardwareMap.get(DcMotorEx.class, "lift");
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    /*
 
     public void liftTarget(int ltarget){
         liftTarget = ltarget;
@@ -39,12 +41,12 @@ public class LiftSubsystem {
 
         double power = pid + ff;
         lift.setPower(power);
-    }
+    }*/
 
     //------------------------------ Lift Extend ------------------------------//
     public void liftExtend_Scoring() {
-                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(-100);//500
+                //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                lift.setTargetPosition(1000);//500
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }
@@ -58,8 +60,8 @@ public class LiftSubsystem {
 
     //------------------------------ Lift Retract ------------------------------//
     public void liftRetract_Scoring() {
-                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(100);//500
+                //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                lift.setTargetPosition(0);//-450
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }

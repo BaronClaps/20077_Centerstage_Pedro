@@ -19,9 +19,9 @@ public class ClawSubsystem {
     double openL = 0.45;//.42
     double openR = 0.25;//.28
     double startClaw = 0.174;
-    double groundClaw = 0.815;
+    double groundClaw = 0.835; //.815
     double scoringClaw = 0.25;
-    double white54 = 0.835;
+    double white54 = 0.865;
     double white32 = 0.86;
     double white1 = 0.835;
     double whiteScoringClaw = 0.75; //.725

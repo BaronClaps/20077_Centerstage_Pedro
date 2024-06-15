@@ -20,10 +20,10 @@ import com.qualcomm.robotcore.util.Range;
 public class GearSubsystem {
     public DcMotorEx gear;
     private PIDController controller;
-    public static double p = 0.0215, i = 0, d = 0.0005;
-    public static double f = 0.05;
+    public static double Gp = 0.0215, Gi = 0, Gd = 0.0005;
+    public static double Gf = 0.05;
     public int gearTarget = 0;
-    public static double ticks_in_degree = 7.7395;
+    public static double Gticks_in_degree = 7.7395;
     public int gearPos;
 
     //private Servo wheelServo;
@@ -45,12 +45,12 @@ public class GearSubsystem {
     }
 
    public void gearPIDUpdate() {
-        controller = new PIDController(p,i,d);
+        controller = new PIDController(Gp,Gi,Gd);
         int gearPos = gear.getCurrentPosition();
-        double pid = controller.calculate(gearPos, gearTarget);
-        double ff = Math.cos(Math.toRadians(gearTarget / ticks_in_degree)) * f;
+        double Gpid = controller.calculate(gearPos, gearTarget);
+        double Gff = Math.cos(Math.toRadians(gearTarget / Gticks_in_degree)) * Gf;
 
-        double power = pid + ff;
+        double power = Gpid + Gff;
 
         gear.setPower(power);
     }
@@ -60,19 +60,19 @@ public class GearSubsystem {
     }
 
     public void scoringGear() {
-        gearTarget(750);
+        gearTarget(950);
     }
 
     public void white54() {
-        gearTarget(96);
-    }
-
-    public void white32() {
         gearTarget(148);
     }
 
+    public void white32() {
+        gearTarget(115);
+    }
+
     public void white1() {
-        gearTarget(96);
+        gearTarget(5);
     }
 
     //------------------------------Ground Position------------------------------//

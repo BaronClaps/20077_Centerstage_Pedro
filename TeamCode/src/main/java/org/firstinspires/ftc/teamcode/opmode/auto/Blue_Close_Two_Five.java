@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.config.pedroPathing.util.AutoActionSchedul
 @Autonomous(name = "Blue Close 2+5", group = "Blue")
 public class Blue_Close_Two_Five extends OpMode {
 
-    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer;
+    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
     private String navigation;
     public ClawSubsystem claw;
     public GearSubsystem gear;
@@ -42,19 +42,19 @@ public class Blue_Close_Two_Five extends OpMode {
     private Pose blueRightSpikeMark = new Pose(-36+72+12, 8+72, Math.toRadians(270));
 
     //Backdrop zone locations
-    private Pose blueLeftBackdrop = new Pose(30+12+2, 117-1.5, Math.toRadians(270)); //41
+    private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1, Math.toRadians(270)); //41
     private Pose blueMiddleBackdrop = new Pose(30+12+6, 51.5+72, Math.toRadians(270));
     private Pose blueRightBackdrop = new Pose(30+12+12, 51.5+72, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(30+12, 117-1.5, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(30+12, 117+1, Math.toRadians(270));
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(12+14, 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(12+14, 36, Math.toRadians(270));
+    private Pose blueTopTruss = new Pose(12+13+1, 84, Math.toRadians(270)); //22
+    private Pose blueBottomTruss = new Pose(12+13+1, 36, Math.toRadians(270));
 
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+12+1, 13, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+12+1, 13.5, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -145,12 +145,14 @@ public class Blue_Close_Two_Five extends OpMode {
                 break;
             case 11:
              if (pathTimer.getElapsedTimeSeconds() > 3) {
-                    claw.openLClaw();
-                }
-                if (pathTimer.getElapsedTimeSeconds() > 4) {
-                    setActionState(1);
-                    setPathState(12);
-                }
+                 claw.openLClaw();
+             }
+             if (pathTimer.getElapsedTimeSeconds() > 4) {
+                 setActionState(1);
+             }
+             if (pathTimer.getElapsedTimeSeconds() > 5) {
+                 setPathState(12);
+             }
                 break;
             case 12:
                 if(!follower.isBusy()) {
@@ -161,27 +163,29 @@ public class Blue_Close_Two_Five extends OpMode {
                 setPathState(13);
                 break;
             case 13:
-                follower.holdPoint(new BezierPoint(initialScoreOnBackdrop.getLastControlPoint()), initialBackdropGoalPose.getHeading());
-                setPathState(14);
-
+                if (!follower.isBusy()) {
+                    follower.holdPoint(new BezierPoint(initialScoreOnBackdrop.getLastControlPoint()), initialBackdropGoalPose.getHeading());
+                    setPathState(14);
+                }
                 break;
             case 14:
                 if (pathTimer.getElapsedTimeSeconds() > 3) {
                     claw.openRClaw();
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 5) {
                     setActionState(2);
                     setPathState(15);
                 }
                 break;
             case 15:
-                if(!follower.isBusy()) {
-                    claw.openRClaw();
-                    follower.setMaxPower(0.85);
+                    follower.setMaxPower(0.8);
                     follower.followPath(cycleStackTo, true);
                     setPathState(16);
-                }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 3) {
+                gear.gearTarget(148);
+                if (pathTimer.getElapsedTimeSeconds() > 4.5) {
+                    claw.closeClaws();
                     setPathState(17);
                 }
                 break;
@@ -219,10 +223,10 @@ public class Blue_Close_Two_Five extends OpMode {
                 break;
             case 22:
                 if (pathTimer.getElapsedTimeSeconds() > 3.5) {
-                    setPathState(23);
+                    setPathState(26);
                 }
                 break;
-            case 23:
+           /* case 23:
                 if(!follower.isBusy()) {
                     follower.followPath(cycleStackTo, true);
                     setPathState(24);
@@ -238,7 +242,7 @@ public class Blue_Close_Two_Five extends OpMode {
                     follower.followPath(cycleStackBack, true);
                     setPathState(26);
                 }
-                break;
+                break;*/
             case 26:
                 if(opmodeTimer.getElapsedTimeSeconds() > 30) {
                     follower.breakFollowing();
@@ -257,13 +261,13 @@ public class Blue_Close_Two_Five extends OpMode {
                 setActionState(-1);
                 break;
             case 1:
-                gear.gearTarget(850);
+                gear.gearTarget(950);
                 setClawState(1);
                 setLiftState(1);
                 setActionState(-1);
                 break;
             case 2:
-                gear.gearTarget(0);
+                gear.gearTarget(350);
                 setLiftState(2);
                 setClawState(2);
                 setActionState(-1);
@@ -283,7 +287,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setClawState(-1);
                 break;
             case 2:
-                claw.groundClaw();
+                claw.white54();
                 claw.openClaws();
                 setClawState(-1);
                 break;
@@ -311,15 +315,20 @@ public class Blue_Close_Two_Five extends OpMode {
     public void liftUpdate() {
         switch (liftState) {
             case 0:
+                lift.lift.setPower(0);
                 setLiftState(-1);
                 break;
             case 1:
-                lift.liftTarget(100);
-                setLiftState(-1);
+                lift.liftExtend_Scoring();
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 950)) {
+                    lift.lift.setPower(0);
+                    setLiftState(-1);
+                }
                 break;
             case 2:
-                lift.liftTarget(0);
-                if(!lift.lift.isBusy()) {
+                lift.liftRetract_Scoring();
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() < 25)) {
+                    lift.lift.setPower(0);
                     setLiftState(-1);
                 }
                 break;
@@ -351,6 +360,7 @@ public class Blue_Close_Two_Five extends OpMode {
 
     public void setLiftState(int lState) {
         liftState = lState;
+        liftTimer.resetTimer();
     }
 
 
@@ -364,17 +374,17 @@ public class Blue_Close_Two_Five extends OpMode {
         autonomousActionUpdate();
         clawUpdate();
         liftUpdate();
-        lift.liftPIDUpdate();
-        //gear.gearPIDUpdate();
+        //lift.liftPIDUpdate();
+        gear.gearPIDUpdate();
 
         telemetry.addData("path state", pathState);
         telemetry.addData("gear pos var", gear.gearPos);
         telemetry.addData("gear pos", gear.gear.getCurrentPosition());
         telemetry.addData("gear tar", gear.gearTarget);
 
-        telemetry.addData("lift pos var", lift.armPos);
+       // telemetry.addData("lift pos var", lift.armPos);
         telemetry.addData("lift pos", lift.lift.getCurrentPosition());
-        telemetry.addData("lift tar", lift.liftTarget);
+        //telemetry.addData("lift tar", lift.liftTarget);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
@@ -387,6 +397,7 @@ public class Blue_Close_Two_Five extends OpMode {
         actionTimer = new Timer();
         opmodeTimer = new Timer();
         scanTimer = new Timer();
+        liftTimer = new Timer();
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
