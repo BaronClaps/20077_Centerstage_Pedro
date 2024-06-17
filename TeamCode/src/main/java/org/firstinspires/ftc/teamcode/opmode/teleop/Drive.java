@@ -103,8 +103,8 @@ public class Drive extends LinearOpMode {
 
             //----------------------------WheelServo----------------------------\\
 
-            if(gamepad1.y){
-                WheelServo.setPosition(0.5); }
+            /*if(gamepad1.y){
+                WheelServo.setPosition(0.5); }*/
 
             //----------------------------pivot----------------------------\\
 
@@ -160,7 +160,7 @@ public class Drive extends LinearOpMode {
 
             //----------------------------droneServo----------------------------\\
 
-            if (gamepad1.dpad_down) {
+            if (gamepad1.y) {
                 droneServo.setPosition(1); }
             else {droneServo.setPosition(0.6); }
 

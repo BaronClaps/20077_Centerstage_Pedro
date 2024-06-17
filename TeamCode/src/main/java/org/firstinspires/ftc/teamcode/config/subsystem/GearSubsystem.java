@@ -32,8 +32,8 @@ public class GearSubsystem {
         gear = hardwareMap.get(DcMotorEx.class, "gear");
         gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
-        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 

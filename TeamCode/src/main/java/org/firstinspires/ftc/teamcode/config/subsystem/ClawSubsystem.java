@@ -89,7 +89,7 @@ public class ClawSubsystem {
 
 
     public void whiteScoringClaw() {
-        pivot.setPosition(scoringClaw);
+        pivot.setPosition(whiteScoringClaw);
     }
 
 }
