@@ -39,7 +39,7 @@ public class Blue_Close_Two_Five extends OpMode {
     //Spike mark locations
     private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+71, Math.toRadians(270)); //51
     private Pose blueMiddleSpikeMark = new Pose(-30+72+12, 22+72, Math.toRadians(270));
-    private Pose blueRightSpikeMark = new Pose(-36+72+12, 8+72, Math.toRadians(270));
+    private Pose blueRightSpikeMark = new Pose(-36+72+16, 8+72, Math.toRadians(270));
 
     //Backdrop zone locations
     private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
