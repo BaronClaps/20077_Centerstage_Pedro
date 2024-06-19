@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,6 +24,12 @@ import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.util.AutoActionScheduler;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+import java.util.concurrent.TimeUnit;
+
+
+
+import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Blue Close 2+5", group = "Blue")
 public class Blue_Close_Two_Five extends OpMode {
@@ -33,11 +40,12 @@ public class Blue_Close_Two_Five extends OpMode {
     public GearSubsystem gear;
     public LiftSubsystem lift;
     public PresetSubsystem presets;
+    private HuskyLens huskyLens;
 
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+71, Math.toRadians(270)); //51
+    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72, Math.toRadians(270)); //51
     private Pose blueMiddleSpikeMark = new Pose(-30+72+12, 22+72, Math.toRadians(270));
     private Pose blueRightSpikeMark = new Pose(-36+72+12, 8+72, Math.toRadians(270));
 
@@ -45,17 +53,17 @@ public class Blue_Close_Two_Five extends OpMode {
     private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
     private Pose blueMiddleBackdrop = new Pose(30+12+6, 51.5+72, Math.toRadians(270));
     private Pose blueRightBackdrop = new Pose(30+12+12, 51.5+72, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(22+12, 114, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(22+8, 110, Math.toRadians(270));
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(12+13+1, 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(12+13+1, 36, Math.toRadians(270));
+    private Pose blueTopTruss = new Pose(12+13+2.5, 84, Math.toRadians(270)); //22
+    private Pose blueBottomTruss = new Pose(12+13+2.5, 36, Math.toRadians(270));
 
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+12+4.5, 12, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+12+3, 12, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+12+3, 12.5, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(36+12+3.5, 12.5, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -159,10 +167,10 @@ public class Blue_Close_Two_Five extends OpMode {
                 setPathState(11);
                 break;
             case 11:
-             if (pathTimer.getElapsedTimeSeconds() > 3) {
-                 claw.openLClaw();
-                 setPathState(12);
-             }
+                if (pathTimer.getElapsedTimeSeconds() > 3) {
+                    claw.openLClaw();
+                    setPathState(12);
+                }
                 break;
             case 12:
                 if(!follower.isBusy() && pathTimer.getElapsedTimeSeconds() > 0.5) {
@@ -189,26 +197,24 @@ public class Blue_Close_Two_Five extends OpMode {
                 }
                 break;
             case 15:
-                    follower.setMaxPower(0.7);
-                    follower.followPath(cycleStackTo2, true);
+                follower.setMaxPower(0.7);
+                follower.followPath(cycleStackTo, true);
 
-                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        setActionState(3);
-                        setPathState(16);
-                    }
+                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    setActionState(3);
+                    setPathState(16);
+                }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 5) {
+                if (pathTimer.getElapsedTimeSeconds() > 5.5) {
                     claw.closeClaws();
                     setPathState(17);
                 }
                 break;
             case 17:
-                if(!follower.isBusy()) {
                     follower.setMaxPower(0.85);
                     follower.followPath(cycleStackBack, true);
                     setPathState(18);
-                }
                 break;
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 2.5) {
@@ -246,6 +252,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 if(pathTimer.getElapsedTimeSeconds() > 0.5) {
                     follower.setMaxPower(0.85);
                     follower.followPath(cycleStackBack, true);
+                    setActionState(3);
                     setPathState(22);
                 }
                 break;
@@ -257,7 +264,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 break;
             case 100202:
                 follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
-                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     claw.openClaws();
                     setActionState(5);
                     setPathState(26);
@@ -291,7 +298,7 @@ public class Blue_Close_Two_Five extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                gear.gearTarget(150);
+                gear.gearTarget(130);
                 setClawState(0);
                 setLiftState(0);
                 setActionState(-1);
@@ -309,7 +316,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setActionState(-1);
                 break;
             case 3:
-                gear.gearTarget(144); //148
+                gear.gearTarget(115); //148
                 setClawState(3);
                 setActionState(-1);
                 break;
@@ -326,7 +333,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setActionState(-1);
                 break;
             case 6:
-                gear.gearTarget(115); //148
+                gear.gearTarget(83); //148
                 setClawState(3);
                 setActionState(-1);
                 break;
@@ -355,7 +362,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setClawState(-1);
                 break;
             case 4:
-                claw.scoringClaw();
+                claw.groundClaw();
                 setClawState(-1);
                 break;
         }
@@ -435,7 +442,7 @@ public class Blue_Close_Two_Five extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        
+
 
         autonomousPathUpdate();
         autonomousActionUpdate();
@@ -449,7 +456,7 @@ public class Blue_Close_Two_Five extends OpMode {
         telemetry.addData("gear pos", gear.gear.getCurrentPosition());
         telemetry.addData("gear tar", gear.gearTarget);
 
-       // telemetry.addData("lift pos var", lift.armPos);
+        // telemetry.addData("lift pos var", lift.armPos);
         telemetry.addData("lift pos", lift.lift.getCurrentPosition());
         //telemetry.addData("lift tar", lift.liftTarget);
         telemetry.addData("x", follower.getPose().getX());
@@ -463,7 +470,6 @@ public class Blue_Close_Two_Five extends OpMode {
         pathTimer = new Timer();
         actionTimer = new Timer();
         opmodeTimer = new Timer();
-        scanTimer = new Timer();
         liftTimer = new Timer();
 
         follower = new Follower(hardwareMap);
@@ -474,26 +480,44 @@ public class Blue_Close_Two_Five extends OpMode {
         lift = new LiftSubsystem(hardwareMap);
         presets = new PresetSubsystem(claw, lift, gear);
 
-        claw.closeClaws();
-        claw.startClaw();
-
-        scanTimer.resetTimer();
+        huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
 
         telemetry.addData("Init", "Finished");
         telemetry.update();
 
+        claw.closeClaws();
+        claw.startClaw();
     }
 
     @Override
     public void init_loop() {
-        if (scanTimer.getElapsedTime() > 750) {
-            scanTimer.resetTimer(); }
     }
 
     @Override
     public void start() {
         claw.closeClaws();
         navigation = "left";
+        /*Deadline rateLimit = new Deadline(1, TimeUnit.SECONDS);
+        rateLimit.expire();
+
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        for (int i = 0; i < blocks.length; i++) {
+            telemetry.addData("Block", blocks[i].toString());// this gives you the data
+            telemetry.addData("location?", blocks[i].x);// this gives you just x
+            //----------------------------1----------------------------\\
+            if (blocks[i].x < 100 && blocks[i].id == 2 && blocks[i].y < 200) {
+                navigation = "left";
+            }
+            if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id == 2 && blocks[i].y < 200) {
+                navigation = "middle";
+            }
+            if (blocks[i].x > 210 && blocks[i].id == 2 && blocks[i].y < 200) {
+                navigation = "right";
+            }
+        }*/
+        //telemetry.update();
         setBackdropGoalPose();
         buildPaths();
         opmodeTimer.resetTimer();
