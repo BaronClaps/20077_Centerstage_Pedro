@@ -52,7 +52,7 @@ public class LiftSubsystem {
     }
 
     public void liftExtend_WhiteScoring() {
-                lift.setTargetPosition(1200); //-800
+                lift.setTargetPosition(900); //-800
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }

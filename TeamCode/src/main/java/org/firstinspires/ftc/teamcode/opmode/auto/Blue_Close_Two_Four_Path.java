@@ -19,8 +19,8 @@ import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
 
-@Autonomous(name = "Blue Close 2+5 Path", group = "Blue")
-public class Blue_Close_Two_Five_Path extends OpMode {
+@Autonomous(name = "Blue Close 2+4 Path", group = "Blue")
+public class Blue_Close_Two_Four_Path extends OpMode {
 
     private Timer pathTimer, opmodeTimer, scanTimer;
     private String navigation;

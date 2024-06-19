@@ -20,7 +20,6 @@ public class Drive extends LinearOpMode {
     private Servo clawL       = null; //es1
     private Servo clawR       = null; //es2
     private Servo droneServo  = null; //es5
-    private Servo WheelServo  = null; //es4
 
     @Override
     public void runOpMode() {
@@ -34,8 +33,6 @@ public class Drive extends LinearOpMode {
         clawL = hardwareMap.get(Servo.class, "clawL");
         clawR = hardwareMap.get(Servo.class, "clawR");
         droneServo = hardwareMap.get(Servo.class, "droneServo");
-        WheelServo = hardwareMap.get(Servo.class, "WheelServo");
-        WheelServo.setPosition(0.85);
         droneServo.setPosition(0.6);
         lF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.REVERSE);

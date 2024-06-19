@@ -1,15 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
 
-import com.acmerobotics.roadrunner.ParallelAction;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.FollowPathAction;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.pathGeneration.BezierCurve;
@@ -23,16 +18,9 @@ import org.firstinspires.ftc.teamcode.config.subsystem.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
-import org.firstinspires.ftc.teamcode.config.pedroPathing.util.AutoActionScheduler;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import java.util.concurrent.TimeUnit;
 
-
-
-import java.util.concurrent.TimeUnit;
-
-@Autonomous(name = "Blue Close 2+5", group = "Blue")
-public class Blue_Close_Two_Five extends OpMode {
+@Autonomous(name = "Blue Close 2+2+2", group = "Blue")
+public class Blue_Close_Two_Two_Two extends OpMode {
 
     private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
     private String navigation;
@@ -45,15 +33,15 @@ public class Blue_Close_Two_Five extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72, Math.toRadians(270)); //51
-    private Pose blueMiddleSpikeMark = new Pose(-30+72+12, 22+72, Math.toRadians(270));
+    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72+1, Math.toRadians(270)); //51
+    private Pose blueMiddleSpikeMark = new Pose(-30+72+15, 22+67.5, Math.toRadians(270));
     private Pose blueRightSpikeMark = new Pose(-36+72+16, 8+72, Math.toRadians(270));
 
     //Backdrop zone locations
     private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
-    private Pose blueMiddleBackdrop = new Pose(30+12+6, 51.5+72, Math.toRadians(270));
-    private Pose blueRightBackdrop = new Pose(30+12+12, 51.5+72, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(22+8, 110, Math.toRadians(270));
+    private Pose blueMiddleBackdrop = new Pose(30+12+10.5, 117+1+3+0.5, Math.toRadians(270));
+    private Pose blueRightBackdrop = new Pose(30+12+16.5, 117+1+3+0.5, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(30+14+2, 117+1+5.5, Math.toRadians(270));
 
     //Through Truss
     private Pose blueTopTruss = new Pose(12+13+2.5, 84, Math.toRadians(270)); //22
@@ -62,8 +50,8 @@ public class Blue_Close_Two_Five extends OpMode {
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+12+3, 12.5, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+12+3.5, 12.5, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+10.25, 12.25, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(36+10.75, 12.25, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -206,15 +194,15 @@ public class Blue_Close_Two_Five extends OpMode {
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 5.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 6) {
                     claw.closeClaws();
                     setPathState(17);
                 }
                 break;
             case 17:
-                    follower.setMaxPower(0.85);
-                    follower.followPath(cycleStackBack, true);
-                    setPathState(18);
+                follower.setMaxPower(0.7);
+                follower.followPath(cycleStackBack, true);
+                setPathState(18);
                 break;
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 2.5) {
@@ -223,9 +211,13 @@ public class Blue_Close_Two_Five extends OpMode {
                 }
                 break;
             case 100201:
-                follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
                 if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     claw.openClaws();
+                    setPathState(100203);
+                }
+                break;
+            case 100203:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     setActionState(5);
                     setPathState(19);
                 }
@@ -243,14 +235,14 @@ public class Blue_Close_Two_Five extends OpMode {
                     setPathState(201101);
                 }
             case 201101:
-                if (pathTimer.getElapsedTimeSeconds() > 3) {
+                if (pathTimer.getElapsedTimeSeconds() > 4) {
                     claw.closeClaws();
                     setPathState(21);
                 }
                 break;
             case 21:
                 if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    follower.setMaxPower(0.85);
+                    follower.setMaxPower(0.7);
                     follower.followPath(cycleStackBack, true);
                     setActionState(3);
                     setPathState(22);
@@ -259,13 +251,17 @@ public class Blue_Close_Two_Five extends OpMode {
             case 22:
                 if (pathTimer.getElapsedTimeSeconds() > 2.5) {
                     setActionState(4);
+                    setPathState(100204);
+                }
+                break;
+            case 100204:
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    claw.openClaws();
                     setPathState(100202);
                 }
                 break;
             case 100202:
-                follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
-                    claw.openClaws();
+                if (pathTimer.getElapsedTimeSeconds() > 1) {
                     setActionState(5);
                     setPathState(26);
                 }
@@ -297,44 +293,50 @@ public class Blue_Close_Two_Five extends OpMode {
 
     public void autonomousActionUpdate() {
         switch (actionState) {
-            case 0:
+            case 0: //Brings arm to ground
                 gear.gearTarget(130);
                 setClawState(0);
                 setLiftState(0);
                 setActionState(-1);
                 break;
-            case 1:
+            case 1: //Sets arm to YELLOW scoring position
                 gear.gearTarget(775);
                 setClawState(1);
                 setLiftState(1);
                 setActionState(-1);
                 break;
-            case 2:
+            case 2: // Sets arm down after scoring YELLOW
                 gear.gearTarget(300);
                 setLiftState(2);
                 setClawState(2);
                 setActionState(-1);
                 break;
-            case 3:
-                gear.gearTarget(115); //148
+            case 3: //First cycle white stack grab
+                gear.gearTarget(12); //148
                 setClawState(3);
                 setActionState(-1);
                 break;
-            case 4:
+            case 4: //Sets arm to WHITE Scoring Position
                 gear.gearTarget(950); //148
                 setClawState(4);
-                //setLiftState(1);
+                setLiftState(3);
                 setActionState(-1);
                 break;
-            case 5:
+            case 5: //Sets arm down after scoring WHITE
                 gear.gearTarget(300);
-                //setLiftState(2);
+                setLiftState(4);
                 setClawState(2);
                 setActionState(-1);
                 break;
-            case 6:
-                gear.gearTarget(83); //148
+            case 6: //Second cycle white stack grab
+                gear.gearTarget(120); //148
                 setClawState(3);
+                setActionState(-1);
+                break;
+            case 7: //Sets arm down after scoring Last WHITE
+                gear.gearTarget(150);
+                setLiftState(4);
+                setClawState(0);
                 setActionState(-1);
                 break;
 
@@ -343,7 +345,7 @@ public class Blue_Close_Two_Five extends OpMode {
 
     public void clawUpdate() {
         switch (clawState) {
-            case 0:
+            case 0: //Sets claw to ground
                 claw.groundClaw();
                 claw.closeClaws();
                 setClawState(-1);
@@ -362,7 +364,7 @@ public class Blue_Close_Two_Five extends OpMode {
                 setClawState(-1);
                 break;
             case 4:
-                claw.groundClaw();
+                claw.whiteScoringClaw();
                 setClawState(-1);
                 break;
         }
@@ -406,7 +408,20 @@ public class Blue_Close_Two_Five extends OpMode {
                     setLiftState(-1);
                 }
                 break;
-
+            case 3:
+                lift.liftExtend_WhiteScoring();
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 850)) {
+                    lift.lift.setPower(0);
+                    setLiftState(-1);
+                }
+                break;
+            case 4:
+                lift.liftRetract_WhiteScoring();
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() < 25)) {
+                    lift.lift.setPower(0);
+                    setLiftState(-1);
+                }
+                break;
         }
     }
 
