@@ -151,6 +151,7 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 10:
+                gear.gearReset();
                 follower.followPath(scoreSpikeMark);
                 setPathState(11);
                 break;
