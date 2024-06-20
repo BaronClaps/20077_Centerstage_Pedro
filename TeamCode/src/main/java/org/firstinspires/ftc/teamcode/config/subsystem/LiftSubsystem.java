@@ -25,6 +25,7 @@ public class LiftSubsystem {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         //lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     /*

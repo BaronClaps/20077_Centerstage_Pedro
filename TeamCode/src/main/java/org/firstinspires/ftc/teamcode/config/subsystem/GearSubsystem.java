@@ -32,20 +32,19 @@ public class GearSubsystem {
         gear = hardwareMap.get(DcMotorEx.class, "gear");
         gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
+        gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
         //wheelServo = hardwareMap.get(Servo.class, "WheelServo");
-    }
-
-    public void gearReset() {
-        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void gearTarget(int gtarget){
         gearTarget = gtarget;
     }
 
-   public void gearPIDUpdate() {
+    public void gearPIDUpdate() {
         controller = new PIDController(Gp,Gi,Gd);
         int gearPos = gear.getCurrentPosition();
         double Gpid = controller.calculate(gearPos, gearTarget);
@@ -54,7 +53,6 @@ public class GearSubsystem {
         double power = Gpid + Gff;
 
         gear.setPower(power * 0.7);
-        gear.setVelocity(30);
     }
 
     public void groundGear(){
