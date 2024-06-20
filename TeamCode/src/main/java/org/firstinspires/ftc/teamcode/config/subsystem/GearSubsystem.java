@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class GearSubsystem {
     public DcMotorEx gear;
+    public Servo wheelServo;
     private PIDController controller;
     public static double Gp = 0.0215, Gi = 0, Gd = 0.0005;
     public static double Gf = 0.05;
@@ -32,19 +33,20 @@ public class GearSubsystem {
         gear = hardwareMap.get(DcMotorEx.class, "gear");
         gear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         gear.setDirection(DcMotorSimple.Direction.REVERSE);
-        gear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
-        //wheelServo = hardwareMap.get(Servo.class, "WheelServo");
+        wheelServo = hardwareMap.get(Servo.class, "WheelServo");
     }
-
+/*
     public void gearTarget(int gtarget){
         gearTarget = gtarget;
     }
 
     public void gearPIDUpdate() {
+
         controller = new PIDController(Gp,Gi,Gd);
         int gearPos = gear.getCurrentPosition();
         double Gpid = controller.calculate(gearPos, gearTarget);
@@ -61,67 +63,58 @@ public class GearSubsystem {
 
     public void scoringGear() {
         gearTarget(950);
-    }
+    }*/
 
-    public void white54() {
-        gearTarget(148);
-    }
-
-    public void white32() {
-        gearTarget(115);
-    }
-
-    public void white1() {
+    /*public void white1() {
         gearTarget(5);
-    }
+    }*/
 
     //------------------------------Ground Position------------------------------//
-    /*public void groundGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(-760);
+    public void groundGear() {
+                gear.setTargetPosition(10);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.25);
     }
 
     public void whiteGroundGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(-348); //-300
+
+                gear.setTargetPosition(10); //-300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.5);
     }
 
     //------------------------------Scoring Position------------------------------//
     public void scoringGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(760);
+                gear.setTargetPosition(750);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.75);
+                gear.setPower(1);
     }
 
     public void whiteScoringGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(348); //300
+                gear.setTargetPosition(955); //300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.5);
+                gear.setPower(1;
             }
 
     //------------------------------Start Position-------------------------------//
     public void startGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(-500);
-                gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.25);
+                gear.setPower(0);
+                white32();
     }
 
     //------------------------------End Position-------------------------------//
-    public void endGear() {
-                gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gear.setTargetPosition(-500);
+    public void scoringGearDown() {
+
+                gear.setTargetPosition(50);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(0.5);
     }
 
-
+    public void whiteScoringGearDown() {
+        gear.setTargetPosition(50);
+        gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        gear.setPower(0.5);
+    }
     //------------------------------ Stop Gear -------------------------------//
     public void stopGear() {
                 gear.setPower(0);
@@ -132,17 +125,17 @@ public class GearSubsystem {
     }
 
     //------------------------------ Wheel Servo for Stack -------------------------------//
- /*   public void wheelServo_Activated1() {
-        stopGear();
-        wheelServo.setPosition(0.636); // Top 2 Pixels | bigger # = lower // //0.641
+    public void white54() {
+        gear.setPower(0);
+        wheelServo.setPosition(0.2265);
     }
 
-    public void wheelServo_Activated2() {
-        stopGear();
-        wheelServo.setPosition(0.5725); // Top 2 Pixels | bigger # = lower // //0.641
+    public void white32() {
+        gear.setPower(0);
+        wheelServo.setPosition(0.172);
     }
 
     public void wheelServo_Deactivated() {
-        wheelServo.setPosition(0.85);
-    } */
+        wheelServo.setPosition(0);
+    }
 }

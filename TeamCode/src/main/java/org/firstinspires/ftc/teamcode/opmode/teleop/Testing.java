@@ -22,9 +22,10 @@ public class Testing extends LinearOpMode {
     private Servo droneServo  = null; //es5
     private Servo WheelServo  = null; //es4
 
-    private double groundClawPos = 0.835;
+    private double groundClawPos = 0.865;
     private double clawPosSpecial = 0.685;
     private double clawPos = groundClawPos;
+    private double wheelServoPos;
     @Override
     public void runOpMode() {
         lF = hardwareMap.get(DcMotor.class, "lF");
@@ -38,7 +39,7 @@ public class Testing extends LinearOpMode {
         clawR = hardwareMap.get(Servo.class, "clawR");
         droneServo = hardwareMap.get(Servo.class, "droneServo");
         WheelServo = hardwareMap.get(Servo.class, "WheelServo");
-        WheelServo.setPosition(0.85);
+        WheelServo.setPosition(0);
         droneServo.setPosition(0.6);
         lF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.REVERSE);
@@ -55,6 +56,7 @@ public class Testing extends LinearOpMode {
         pivot.setPosition(.835);
         clawL.setPosition(.45);
         clawR.setPosition(.25);
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -130,11 +132,31 @@ public class Testing extends LinearOpMode {
                 clawR.setPosition(.28);
             } //open
 
+            //-----------------------------Wheel Servo------------------------//
+            if(gamepad1.right_stick_button) {
+                wheelServoPos += 0.0005;
+            }
 
+            if(gamepad1.left_stick_button)
+            {
+                wheelServoPos -= 0.0005;
+            }
 
+            if(gamepad1.right_trigger > 0.1)
+            {
+                wheelServoPos += 0.001;
+            }
+
+            if(gamepad1.left_trigger > 0.1)
+            {
+               wheelServoPos -= 0.001;
+            }
+            WheelServo.setPosition(wheelServoPos);
+
+            telemetry.addData("Wheel", wheelServoPos);
             //----------------------------lift/gear----------------------------\\
 
-            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+           // lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //lift.setPower(1);
             gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //gear.setPower(0.5);
@@ -150,12 +172,12 @@ public class Testing extends LinearOpMode {
                 telemetry.addData("gear", gear.getCurrentPosition());
             }
 
-            if (gamepad1.left_trigger > .1) {
+          /*  if (gamepad1.left_trigger > .1) {
                 tfil(150, -1);
                 telemetry.addData("lift", lift.getCurrentPosition());}
             if (gamepad1.right_trigger > .1) {
                 tfil(200, 1);
-                telemetry.addData("lift", lift.getCurrentPosition());}
+                telemetry.addData("lift", lift.getCurrentPosition());}*/
 
 
 

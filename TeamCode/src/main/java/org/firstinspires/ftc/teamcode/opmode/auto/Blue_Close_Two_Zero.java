@@ -141,19 +141,19 @@ public class Blue_Close_Two_Zero extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                gear.gearTarget(130);
+                //gear.gearTarget(130);
                 setClawState(0);
                 setLiftState(0);
                 setActionState(-1);
                 break;
             case 1:
-                gear.gearTarget(775);
+                //gear.gearTarget(775);
                 setClawState(1);
                 setLiftState(1);
                 setActionState(-1);
                 break;
             case 2:
-                gear.gearTarget(300);
+                //gear.gearTarget(300);
                 setLiftState(2);
                 setClawState(2);
                 setActionState(-1);
@@ -261,7 +261,7 @@ public class Blue_Close_Two_Zero extends OpMode {
         clawUpdate();
         liftUpdate();
         //lift.liftPIDUpdate();
-        gear.gearPIDUpdate();
+        //gear.gearPIDUpdate();
 
         telemetry.addData("path state", pathState);
         telemetry.addData("gear pos var", gear.gearPos);

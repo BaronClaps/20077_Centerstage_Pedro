@@ -41,17 +41,17 @@ public class Blue_Close_Two_Four extends OpMode {
     private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
     private Pose blueMiddleBackdrop = new Pose(30+12+10.5, 117+1+3+0.5, Math.toRadians(270));
     private Pose blueRightBackdrop = new Pose(30+12+16.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(30+14+2, 117+1+5.5, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(30+10, 117+1+4.5, Math.toRadians(270));
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(12+13+2.5, 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(12+13+2.5, 36, Math.toRadians(270));
+    private Pose blueTopTruss = new Pose(12+13+2.25, 84, Math.toRadians(270)); //22
+    private Pose blueBottomTruss = new Pose(12+13+2.25, 36, Math.toRadians(270));
 
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+10.25, 12.25, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+10.75, 12.25, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+10.5, 12, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(36+11.25, 12.5, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -194,7 +194,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 6) {
+                if (pathTimer.getElapsedTimeSeconds() > 5.5) {
                     claw.closeClaws();
                     setPathState(17);
                 }
@@ -211,7 +211,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100201:
-                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     claw.openClaws();
                     setPathState(100203);
                 }
@@ -235,7 +235,7 @@ public class Blue_Close_Two_Four extends OpMode {
                     setPathState(201101);
                 }
             case 201101:
-                if (pathTimer.getElapsedTimeSeconds() > 4) {
+                if (pathTimer.getElapsedTimeSeconds() > 3.5) {
                     claw.closeClaws();
                     setPathState(21);
                 }
@@ -255,7 +255,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100204:
-                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2) {
                     claw.openClaws();
                     setPathState(100202);
                 }
@@ -294,52 +294,52 @@ public class Blue_Close_Two_Four extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0: //Brings arm to ground
-                gear.gearTarget(130);
                 setClawState(0);
+                setGearState(0);
                 setLiftState(0);
                 setActionState(-1);
                 break;
             case 1: //Sets arm to YELLOW scoring position
-                gear.gearTarget(775);
+                setGearState(1);
                 setClawState(1);
                 setLiftState(1);
                 setActionState(-1);
                 break;
             case 2: // Sets arm down after scoring YELLOW
-                gear.gearTarget(300);
+                setGearState(2);
                 setLiftState(2);
                 setClawState(2);
                 setActionState(-1);
                 break;
             case 3: //First cycle white stack grab
-                gear.gearTarget(12); //148
+                gear.stopGear();
+                gear.white54(); //148
                 setClawState(3);
                 setActionState(-1);
                 break;
             case 4: //Sets arm to WHITE Scoring Position
-                gear.gearTarget(950); //148
+                setGearState(3);
                 setClawState(4);
                 setLiftState(3);
                 setActionState(-1);
                 break;
             case 5: //Sets arm down after scoring WHITE
-                gear.gearTarget(300);
+                setGearState(4);
                 setLiftState(4);
                 setClawState(2);
                 setActionState(-1);
                 break;
             case 6: //Second cycle white stack grab
-                gear.gearTarget(120); //148
+                gear.white32();
                 setClawState(3);
                 setActionState(-1);
                 break;
-            case 7: //Sets arm down after scoring Last WHITE
-                gear.gearTarget(150);
+            case 7: //Sets arm down after scoring WHITE FINAL
+                setGearState(4);
                 setLiftState(4);
                 setClawState(0);
                 setActionState(-1);
                 break;
-
         }
     }
 
@@ -370,23 +370,36 @@ public class Blue_Close_Two_Four extends OpMode {
         }
     }
 
-    /*public void gearUpdate() {
+    public void gearUpdate() {
         switch (gearState) {
-            case 10:
-                //gear.startGear();
-                gear.resetGear();
-                gear.gearTarget(-500);
+            case 0:
+                gear.startGear();
+                if (!gear.gear.isBusy()) {
+                    gear.white32();
+                }
                 break;
-            case 11:
-                gear.resetGear();
+            case 1:
                 gear.scoringGear();
+                gear.wheelServo_Deactivated();
                 break;
-            case 12:
-                gear.groundGear();
+            case 2:
+                gear.scoringGearDown();
                 break;
-
+            case 3:
+                gear.whiteScoringGear();
+                break;
+            case 4:
+                gear.whiteScoringGearDown();
+                break;
+            case 5:
+                gear.stopGear();
+                break;
+            case 6:
+                gear.wheelServo_Deactivated();
+                gear.whiteScoringGearDown();
+                break;
         }
-    }*/
+    }
 
     public void liftUpdate() {
         switch (liftState) {
@@ -410,7 +423,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 break;
             case 3:
                 lift.liftExtend_WhiteScoring();
-                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 850)) {
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 1000)) {
                     lift.lift.setPower(0);
                     setLiftState(-1);
                 }
@@ -443,9 +456,9 @@ public class Blue_Close_Two_Four extends OpMode {
         clawState = cState;
     }
 
-    /*public void setGearState(int gState) {
+    public void setGearState(int gState) {
         gearState = gState;
-    }*/
+    }
 
     public void setLiftState(int lState) {
         liftState = lState;
@@ -464,7 +477,7 @@ public class Blue_Close_Two_Four extends OpMode {
         clawUpdate();
         liftUpdate();
         //lift.liftPIDUpdate();
-        gear.gearPIDUpdate();
+        gearUpdate();
 
         telemetry.addData("path state", pathState);
         telemetry.addData("gear pos var", gear.gearPos);
@@ -500,6 +513,7 @@ public class Blue_Close_Two_Four extends OpMode {
         telemetry.addData("Init", "Finished");
         telemetry.update();
 
+        gear.wheelServo_Deactivated();
         claw.closeClaws();
         claw.startClaw();
     }
