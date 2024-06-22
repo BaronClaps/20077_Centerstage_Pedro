@@ -55,8 +55,8 @@ public class Blue_Close_Two_Four extends OpMode {
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+9.25-.75, 12, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+10-0.75, 12.9, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+9.25-.75, 12.2, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(36+10-0.75, 13.1, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
