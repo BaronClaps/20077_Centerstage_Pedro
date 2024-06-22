@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Baron")
+@TeleOp(name="Testing")
 public class Testing extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

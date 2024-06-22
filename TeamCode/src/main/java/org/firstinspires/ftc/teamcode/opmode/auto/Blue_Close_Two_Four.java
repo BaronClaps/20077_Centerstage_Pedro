@@ -36,7 +36,7 @@ public class Blue_Close_Two_Four extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72+1, Math.toRadians(270)); //51
+    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72+1.25, Math.toRadians(270)); //51
     private Pose blueMiddleSpikeMark = new Pose(-30+72+15, 22+67.5, Math.toRadians(270));
     private Pose blueRightSpikeMark = new Pose(-36+72+16, 8+72, Math.toRadians(270));
 
@@ -44,7 +44,9 @@ public class Blue_Close_Two_Four extends OpMode {
     private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
     private Pose blueMiddleBackdrop = new Pose(30+12+10.5, 117+1+3+0.5, Math.toRadians(270));
     private Pose blueRightBackdrop = new Pose(30+12+16.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(30+10, 117+1+4.25, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(30+10.5, 117+1+4.5, Math.toRadians(270));
+    private Pose blueWhiteBackdrop2 = new Pose(30+11.25, 117+1+4.25, Math.toRadians(270));
+
 
     //Through Truss
     private Pose blueTopTruss = new Pose(12+13+1.5, 84, Math.toRadians(270)); //22
@@ -53,8 +55,8 @@ public class Blue_Close_Two_Four extends OpMode {
     // white pixel stack locations
     private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
     private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+9.75, 12, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+10.25, 12.75, Math.toRadians(270)); //47
+    private Pose blueRightStack = new Pose(36+9.25-.75, 12, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(36+10-0.75, 12.9, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -66,7 +68,7 @@ public class Blue_Close_Two_Four extends OpMode {
     private Point blueWhiteBackdropPoint;
 
     private Path scoreSpikeMark, initialScoreOnBackdrop;
-    private PathChain cycleStackTo, cycleStackTo2, cycleStackBack, cycleStackToBezier, cycleStackBackBezier;
+    private PathChain cycleStackTo, cycleStackTo2, cycleStackBack, cycleStackBack2, cycleStackToBezier, cycleStackBackBezier;
 
     private int pathState, actionState, clawState, gearState, liftState;
 
@@ -134,6 +136,16 @@ public class Blue_Close_Two_Four extends OpMode {
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
+        cycleStackBack2 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(blueRightStack2), new Point(blueBottomTruss)))
+                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(blueBottomTruss), new Point(blueTopTruss)))
+                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueWhiteBackdrop2)))
+                .setConstantHeadingInterpolation(blueWhiteBackdrop2.getHeading())
+                .setPathEndTimeoutConstraint(0)
+                .build();
+
         cycleStackToBezier = follower.pathBuilder()
                 .addPath(new BezierCurve(new Point(initialBackdropGoalPose), new Point(30+14,91.6, Point.CARTESIAN), new Point(13+14, 130.8, Point.CARTESIAN), new Point(blueBottomTruss)))
                 .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
@@ -197,12 +209,13 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 5.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 6) {
                     claw.closeClaws();
                     setPathState(17);
                 }
                 break;
             case 17:
+                initialBackdropGoalPose = blueWhiteBackdrop;
                 follower.setMaxPower(0.65);
                 follower.followPath(cycleStackBack, true);
                 setPathState(18);
@@ -214,7 +227,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100201:
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.1) {
                     claw.openClaws();
                     setPathState(100203);
                 }
@@ -258,7 +271,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100204:
-                if (pathTimer.getElapsedTimeSeconds() > 2) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.1) {
                     claw.openClaws();
                     setPathState(100202);
                 }
