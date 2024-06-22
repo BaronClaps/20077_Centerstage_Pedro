@@ -131,7 +131,7 @@ public class GearSubsystem {
     //------------------------------ Wheel Servo for Stack -------------------------------//
     public void white54() {
         gear.setPower(0);
-        wheelServo.setPosition(0.23525); //higher # = claw pos higher //was .233
+        wheelServo.setPosition(0.234); //higher # = claw pos higher //was .233
     }
 
     public void white32() {
