@@ -265,13 +265,13 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 22:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.25) {
                     setActionState(4);
                     setPathState(100204);
                 }
                 break;
             case 100204:
-                if (pathTimer.getElapsedTimeSeconds() > 2.1) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.35) {
                     claw.openClaws();
                     setPathState(100202);
                 }
