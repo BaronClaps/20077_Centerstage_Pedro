@@ -14,17 +14,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ClawSubsystem {
 
     private Servo pivot, clawL, clawR;
-    double closedL = 0.33;
-    double closedR = 0.37;
-    double openL = 0.45;//.42
-    double openR = 0.25;//.28
+    double closedL = 0.32; //33
+    double closedR = 0.38; //37
+    double openL = 0.47;//.42
+    double openR = 0.23;//.28
     double startClaw = 0.174;
     double groundClaw = 0.835; //.815
     double scoringClaw = 0.25;
     double white54 = 0.865;
-    double white32 = 0.86;
+    double white32 = 0.864;
     double white1 = 0.835;
-    double whiteScoringClaw = 0.785; //.725
+    double whiteScoringClaw = 0.78; //.725
 
     public ClawSubsystem(HardwareMap hardwareMap) {
         pivot = hardwareMap.get(Servo.class, "pivot");

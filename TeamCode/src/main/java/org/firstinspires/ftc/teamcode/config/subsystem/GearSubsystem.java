@@ -85,15 +85,19 @@ public class GearSubsystem {
 
     //------------------------------Scoring Position------------------------------//
     public void scoringGear() {
-                gear.setTargetPosition(750);
+                gear.setTargetPosition(855);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(1);
+                gear.setPower(0.8);
     }
 
     public void whiteScoringGear() {
-                gear.setTargetPosition(955); //300
+                gear.setTargetPosition(950); //300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(1;
+                if(gear.getCurrentPosition() <= 800) {
+                    gear.setPower(0.8);
+                } else {
+                    gear.setPower(1);
+                }
             }
 
     //------------------------------Start Position-------------------------------//
@@ -127,12 +131,12 @@ public class GearSubsystem {
     //------------------------------ Wheel Servo for Stack -------------------------------//
     public void white54() {
         gear.setPower(0);
-        wheelServo.setPosition(0.2265);
+        wheelServo.setPosition(0.238); //higher # = claw pos higher //was .2259
     }
 
     public void white32() {
         gear.setPower(0);
-        wheelServo.setPosition(0.172);
+        wheelServo.setPosition(0.17);
     }
 
     public void wheelServo_Deactivated() {

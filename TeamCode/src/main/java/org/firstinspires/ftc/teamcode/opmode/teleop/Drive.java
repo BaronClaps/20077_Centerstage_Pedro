@@ -20,6 +20,7 @@ public class Drive extends LinearOpMode {
     private Servo clawL       = null; //es1
     private Servo clawR       = null; //es2
     private Servo droneServo  = null; //es5
+    private Servo wheelServo = null;
 
     @Override
     public void runOpMode() {
@@ -33,7 +34,8 @@ public class Drive extends LinearOpMode {
         clawL = hardwareMap.get(Servo.class, "clawL");
         clawR = hardwareMap.get(Servo.class, "clawR");
         droneServo = hardwareMap.get(Servo.class, "droneServo");
-        droneServo.setPosition(0.6);
+        wheelServo = hardwareMap.get(Servo.class, "WheelServo");
+
         lF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
@@ -44,6 +46,8 @@ public class Drive extends LinearOpMode {
         gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wheelServo.setPosition(0);
+        droneServo.setPosition(0.6);
         gear.setTargetPosition(0);
         lift.setTargetPosition(0);
         pivot.setPosition(.835);
@@ -124,7 +128,7 @@ public class Drive extends LinearOpMode {
             //----------------------------claw----------------------------\\
 //left
             if (gamepad2.left_bumper) {
-                clawL.setPosition(0.33);
+                clawL.setPosition(0.34);
             } //close
             else if(gamepad2.options) {
                 clawL.setPosition(0.6);
@@ -133,7 +137,7 @@ public class Drive extends LinearOpMode {
             } //open
 //right
             if (gamepad2.right_bumper) {
-                clawR.setPosition(0.37);
+                clawR.setPosition(0.36);
             } //close
             else if (gamepad2.options) {
                 clawR.setPosition(0); //super open

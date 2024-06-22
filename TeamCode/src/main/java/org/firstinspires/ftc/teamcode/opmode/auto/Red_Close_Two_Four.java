@@ -5,7 +5,6 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.pathGeneration.BezierCurve;
@@ -19,11 +18,12 @@ import org.firstinspires.ftc.teamcode.config.subsystem.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "Blue Close 2+4", group = "Blue")
-public class Blue_Close_Two_Four extends OpMode {
+@Autonomous(name = "Red Close 2+4", group = "Red")
+public class Red_Close_Two_Four extends OpMode {
 
     private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
     private String navigation;
@@ -36,34 +36,34 @@ public class Blue_Close_Two_Four extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72+1, Math.toRadians(270)); //51
-    private Pose blueMiddleSpikeMark = new Pose(-30+72+15, 22+67.5, Math.toRadians(270));
-    private Pose blueRightSpikeMark = new Pose(-36+72+16, 8+72, Math.toRadians(270));
+    private Pose redLeftSpikeMark = new Pose(-36+72+16+72, 32+72+1, Math.toRadians(270)); //51
+    private Pose redMiddleSpikeMark = new Pose(-30+72+15+48, 22+67.5, Math.toRadians(270));
+    private Pose redRightSpikeMark = new Pose(-36+72+16+72, 8+72, Math.toRadians(270));
 
     //Backdrop zone locations
-    private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
-    private Pose blueMiddleBackdrop = new Pose(30+12+10.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueRightBackdrop = new Pose(30+12+16.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(30+10, 117+1+4.25, Math.toRadians(270));
+    private Pose redLeftBackdrop = new Pose(30+12+2+72, 117+1+3+0.5, Math.toRadians(270)); //41
+    private Pose redMiddleBackdrop = new Pose(30+12+10.5+72, 117+1+3+0.5, Math.toRadians(270));
+    private Pose redRightBackdrop = new Pose(30+12+16.5+72, 117+1+3+0.5, Math.toRadians(270));
+    private Pose redWhiteBackdrop = new Pose(30+10+72, 117+1+4.25, Math.toRadians(270));
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(12+13+1.5, 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(12+13+1.5, 36, Math.toRadians(270));
+    private Pose redTopTruss = new Pose(12+13+1.5+120, 84, Math.toRadians(270)); //22
+    private Pose redBottomTruss = new Pose(12+13+1.5+120, 36, Math.toRadians(270));
 
     // white pixel stack locations
-    private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
-    private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+9.75, 12, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+10.25, 12.75, Math.toRadians(270)); //47
+    private Pose redLeftStack = new Pose(-36+72+14+12+72, -37+72, Math.toRadians(270));
+    private Pose redMiddleStack = new Pose(-36+72+14+6+72, -37+72, Math.toRadians(270));
+    private Pose redRightStack = new Pose(36+9.75+96, 12+72, Math.toRadians(270)); //47
+    private Pose redRightStack2 = new Pose(36+10.25+96, 12.75+72, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
     // TODO: adjust this for each auto
-    private Pose startPose = new Pose(8.5, 12+72, 0);
+    private Pose startPose = new Pose(8.5+120, 12+72, 180);
 
     private Follower follower;
 
-    private Point blueWhiteBackdropPoint;
+    private Point redWhiteBackdropPoint;
 
     private Path scoreSpikeMark, initialScoreOnBackdrop;
     private PathChain cycleStackTo, cycleStackTo2, cycleStackBack, cycleStackToBezier, cycleStackBackBezier;
@@ -75,26 +75,26 @@ public class Blue_Close_Two_Four extends OpMode {
         switch (navigation) {
             default:
             case "left":
-                spikeMarkGoalPose = new Pose(blueLeftSpikeMark.getX(), blueLeftSpikeMark.getY(), Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueLeftBackdrop.getX(), blueLeftBackdrop.getY(), Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueWhiteBackdrop.getX(), blueWhiteBackdrop.getY(), Math.toRadians(270));
+                spikeMarkGoalPose = new Pose(redLeftSpikeMark.getX(),redLeftSpikeMark.getY(), Math.toRadians(270));
+                initialBackdropGoalPose = new Pose(redLeftBackdrop.getX(), redLeftBackdrop.getY(), Math.toRadians(270));
+                firstCycleBackdropGoalPose = new Pose(redWhiteBackdrop.getX(), redWhiteBackdrop.getY(), Math.toRadians(270));
 
                 break;
             case "middle":
-                spikeMarkGoalPose = new Pose(blueMiddleSpikeMark.getX(), blueMiddleSpikeMark.getY()+3, Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(),Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(), Math.toRadians(270));
+                spikeMarkGoalPose = new Pose(redMiddleSpikeMark.getX(), redMiddleSpikeMark.getY()+3, Math.toRadians(270));
+                initialBackdropGoalPose = new Pose(redMiddleBackdrop.getX(), redMiddleBackdrop.getY(),Math.toRadians(270));
+                firstCycleBackdropGoalPose = new Pose(redMiddleBackdrop.getX(), redMiddleBackdrop.getY(), Math.toRadians(270));
                 break;
             case "right":
-                spikeMarkGoalPose = new Pose(blueRightSpikeMark.getX(), blueRightSpikeMark.getY(), Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(270));
+                spikeMarkGoalPose = new Pose(redRightSpikeMark.getX(), redRightSpikeMark.getY(), Math.toRadians(270));
+                initialBackdropGoalPose = new Pose(redRightBackdrop.getX(), redRightBackdrop.getY(), Math.toRadians(270));
+                firstCycleBackdropGoalPose = new Pose(redRightBackdrop.getX(), redRightBackdrop.getY(), Math.toRadians(270));
                 break;
         }
     }
 
     public void buildPaths() {
-        scoreSpikeMark = new Path(new BezierCurve(new Point(startPose), new Point(8.5,80.5,Point.CARTESIAN), new Point(48,135,Point.CARTESIAN), new Point(spikeMarkGoalPose)));
+        scoreSpikeMark = new Path(new BezierCurve(new Point(startPose), new Point(8.5+72+120,80.5,Point.CARTESIAN), new Point(48+72+120,135,Point.CARTESIAN), new Point(spikeMarkGoalPose)));
         scoreSpikeMark.setLinearHeadingInterpolation(startPose.getHeading(), spikeMarkGoalPose.getHeading());
         scoreSpikeMark.setPathEndTimeoutConstraint(0);
 
@@ -102,51 +102,51 @@ public class Blue_Close_Two_Four extends OpMode {
         initialScoreOnBackdrop.setLinearHeadingInterpolation(spikeMarkGoalPose.getHeading(), initialBackdropGoalPose.getHeading());
         initialScoreOnBackdrop.setPathEndTimeoutConstraint(0);
 
-        blueWhiteBackdropPoint = new Point(blueWhiteBackdrop);
+        redWhiteBackdropPoint = new Point(redWhiteBackdrop);
 
         cycleStackTo = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(blueTopTruss)))
+                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(redTopTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueBottomTruss)))
+                .addPath(new BezierLine(new Point(redTopTruss), new Point(redBottomTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(blueRightStack)))
+                .addPath(new BezierCurve(new Point(redBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(redRightStack)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackTo2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueWhiteBackdrop), new Point(blueTopTruss)))
+                .addPath(new BezierLine(new Point(redWhiteBackdrop), new Point(redTopTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueBottomTruss)))
+                .addPath(new BezierLine(new Point(redTopTruss), new Point(redBottomTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(blueRightStack2)))
+                .addPath(new BezierCurve(new Point(redBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(redRightStack2)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackBack = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueRightStack), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueBottomTruss), new Point(blueTopTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueWhiteBackdrop)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(redRightStack), new Point(redBottomTruss)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(redBottomTruss), new Point(redTopTruss)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(redTopTruss), new Point(redWhiteBackdrop)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackToBezier = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(initialBackdropGoalPose), new Point(30+14,91.6, Point.CARTESIAN), new Point(13+14, 130.8, Point.CARTESIAN), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(20.5+14,10, Point.CARTESIAN), new Point(42+14,35, Point.CARTESIAN), new Point(blueRightStack)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(initialBackdropGoalPose), new Point(30+14,91.6, Point.CARTESIAN), new Point(13+14, 130.8, Point.CARTESIAN), new Point(redBottomTruss)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(redBottomTruss), new Point(20.5+14,10, Point.CARTESIAN), new Point(42+14,35, Point.CARTESIAN), new Point(redRightStack)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackBackBezier = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(blueRightStack), new Point(42+14,35, Point.CARTESIAN), new Point(20.5+14,10, Point.CARTESIAN), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(13+14, 130.8, Point.CARTESIAN), new Point(30+14,91.6, Point.CARTESIAN), new Point(blueWhiteBackdrop)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(redRightStack), new Point(42+14,35, Point.CARTESIAN), new Point(20.5+14,10, Point.CARTESIAN), new Point(redBottomTruss)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(redBottomTruss), new Point(13+14, 130.8, Point.CARTESIAN), new Point(30+14,91.6, Point.CARTESIAN), new Point(redWhiteBackdrop)))
+                .setConstantHeadingInterpolation(redWhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
     }
@@ -496,6 +496,12 @@ public class Blue_Close_Two_Four extends OpMode {
         }
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
 
+
+        // Wait for driver to press start
+        telemetry.addData("Camera preview on/off", "3 dots, Camera Stream");
+        telemetry.addData(">", "Touch Play to start OpMode");
+        telemetry.update();
+
         telemetry.addData("path state", pathState);
         telemetry.addData("gear pos var", gear.gearPos);
         telemetry.addData("gear pos", gear.gear.getCurrentPosition());
@@ -542,16 +548,17 @@ public class Blue_Close_Two_Four extends OpMode {
     @Override
     public void start() {
         claw.closeClaws();
+        navigation = "left";
         HuskyLens.Block[] blocks = huskyLens.blocks();
         for (int i = 0; i < blocks.length; i++) {
             //----------------------------1----------------------------\\
-            if (blocks[i].x < 100 && blocks[i].id == 2 && blocks[i].y < 200) {
+            if (blocks[i].x < 100 && blocks[i].id == 1 && blocks[i].y < 200) {
                 navigation = "left";
             }
-            if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id == 2 && blocks[i].y < 200) {
+            if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id == 1 && blocks[i].y < 200) {
                 navigation = "middle";
             }
-            if (blocks[i].x > 210 && blocks[i].id == 2 && blocks[i].y < 200) {
+            if (blocks[i].x > 210 && blocks[i].id == 1 && blocks[i].y < 200) {
                 navigation = "right";
             }
         }
