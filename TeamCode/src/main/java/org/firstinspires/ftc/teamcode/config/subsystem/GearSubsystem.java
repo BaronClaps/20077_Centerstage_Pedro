@@ -26,6 +26,7 @@ public class GearSubsystem {
     public int gearTarget = 0;
     public static double Gticks_in_degree = 7.7395;
     public int gearPos;
+    public double gearPower;
 
     //private Servo wheelServo;
 
@@ -85,19 +86,32 @@ public class GearSubsystem {
 
     //------------------------------Scoring Position------------------------------//
     public void scoringGear() {
-                gear.setTargetPosition(825);
+                gear.setTargetPosition(890);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gear.setPower(0.8);
+                gear.setPower(1);
     }
 
     public void whiteScoringGear() {
-                gear.setTargetPosition(940); //300
+                gear.setTargetPosition(865); //300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if(gear.getCurrentPosition() <= 800) {
-                    gear.setPower(0.8);
-                } else {
-                    gear.setPower(1);
+               if(gear.getCurrentPosition() <= 500) {
+                    gearPower = 1;
+                } else if(gear.getCurrentPosition() > 500 && gear.getCurrentPosition() <= 600){
+                    gearPower = 0.5;
                 }
+                else if(gear.getCurrentPosition() > 600 && gear.getCurrentPosition() <= 700){
+                    gearPower = 0.4;
+                }
+                else if(gear.getCurrentPosition() > 700 && gear.getCurrentPosition() <= 800){
+                    gearPower = 0.33;
+                }
+                else if(gear.getCurrentPosition() > 800 && gear.getCurrentPosition() <= 865){
+                    gearPower = 0.1;
+                }
+                else {
+                    gearPower = 0;
+                }
+                gear.setPower(gearPower);
             }
 
     //------------------------------Start Position-------------------------------//
@@ -131,12 +145,12 @@ public class GearSubsystem {
     //------------------------------ Wheel Servo for Stack -------------------------------//
     public void white54() {
         gear.setPower(0);
-        wheelServo.setPosition(0.234); //higher # = claw pos higher //was .233
+        wheelServo.setPosition(0.223); //higher # = claw pos higher //was .233
     }
 
     public void white32() {
         gear.setPower(0);
-        wheelServo.setPosition(0.139); //.133
+        wheelServo.setPosition(0.131); //.133
     }
 
     public void wheelServo_Deactivated() {

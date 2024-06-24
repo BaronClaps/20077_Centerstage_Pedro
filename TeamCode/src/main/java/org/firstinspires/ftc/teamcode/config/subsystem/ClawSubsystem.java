@@ -24,7 +24,7 @@ public class ClawSubsystem {
     double white54 = 0.865;
     double white32 = 0.831;
     double white1 = 0.835;
-    double whiteScoringClaw = 0.725; //.78
+    double whiteScoringClaw = 0.79; //.78
 
     public ClawSubsystem(HardwareMap hardwareMap) {
         pivot = hardwareMap.get(Servo.class, "pivot");

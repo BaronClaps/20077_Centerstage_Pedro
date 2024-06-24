@@ -40,16 +40,14 @@ public class Drive extends LinearOpMode {
         lB.setDirection(DcMotor.Direction.REVERSE);
         lift.setDirection(DcMotor.Direction.REVERSE);
         gear.setDirection(DcMotor.Direction.REVERSE);
-        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelServo.setPosition(0);
         droneServo.setPosition(0.6);
-        gear.setTargetPosition(0);
-        lift.setTargetPosition(0);
         pivot.setPosition(.835);
         clawL.setPosition(.45);
         clawR.setPosition(.25);
@@ -58,8 +56,10 @@ public class Drive extends LinearOpMode {
         telemetry.update();
         waitForStart();
         runtime.reset();
-        boolean clawState = false;
-        boolean oldArmButton = true;
+        gear.setTargetPosition(0);
+        lift.setTargetPosition(0);
+        gear.setPower(-0.75);
+        lift.setPower(-1);
 
         //----------------------------Main-Code----------------------------\\
 
@@ -103,6 +103,21 @@ public class Drive extends LinearOpMode {
                 rB.setPower(0.2 * rBPower); }
 
             //----------------------------WheelServo----------------------------\\
+
+            if (gamepad1.share) {
+                gear.setTargetPosition(0);
+                lift.setTargetPosition(0);
+                gear.setPower(-0.75);
+                lift.setPower(-1);
+
+                if (gear.getCurrentPosition() < 10 && gear.getCurrentPosition() > -10) {
+                    gear.setPower(0);
+                }
+
+                if (lift.getCurrentPosition() < 10 && lift.getCurrentPosition() > -10) {
+                    lift.setPower(0);
+                }
+            }
 
             /*if(gamepad1.y){
                 WheelServo.setPosition(0.5); }*/
