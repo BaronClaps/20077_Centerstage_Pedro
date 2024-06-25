@@ -330,7 +330,7 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
                 break;
             case 3:
                 gear.stopGear();
-                gear.white54(); //148
+                gear.white54();
                 setClawState(3);
                 setActionState(-1);
                 break;
@@ -537,33 +537,24 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
 
     @Override
     public void init_loop() {
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        for (int i = 0; i < blocks.length; i++) {
+            //----------------------------1----------------------------\\
+            if (blocks[i].x <= 100 && blocks[i].id == 2) {
+                navigation = "left";
+            }
+            if (blocks[i].x > 100 && blocks[i].x <= 270 && blocks[i].id == 2) {
+                navigation = "middle";
+            }
+            if (blocks[i].x > 270 && blocks[i].id == 2) {
+                navigation = "right";
+            }
+        }
     }
 
     @Override
     public void start() {
         claw.closeClaws();
-        navigation = "left";
-        /*Deadline rateLimit = new Deadline(1, TimeUnit.SECONDS);
-        rateLimit.expire();
-
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
-
-        HuskyLens.Block[] blocks = huskyLens.blocks();
-        for (int i = 0; i < blocks.length; i++) {
-            telemetry.addData("Block", blocks[i].toString());// this gives you the data
-            telemetry.addData("location?", blocks[i].x);// this gives you just x
-            //----------------------------1----------------------------\\
-            if (blocks[i].x < 100 && blocks[i].id == 2 && blocks[i].y < 200) {
-                navigation = "left";
-            }
-            if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id == 2 && blocks[i].y < 200) {
-                navigation = "middle";
-            }
-            if (blocks[i].x > 210 && blocks[i].id == 2 && blocks[i].y < 200) {
-                navigation = "right";
-            }
-        }*/
-        //telemetry.update();
         setBackdropGoalPose();
         buildPaths();
         opmodeTimer.resetTimer();

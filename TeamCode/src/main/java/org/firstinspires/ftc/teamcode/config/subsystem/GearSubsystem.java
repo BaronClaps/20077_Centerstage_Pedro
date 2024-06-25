@@ -105,7 +105,7 @@ public class GearSubsystem {
                 else if(gear.getCurrentPosition() > 700 && gear.getCurrentPosition() <= 800){
                     gearPower = 0.33;
                 }
-                else if(gear.getCurrentPosition() > 800 && gear.getCurrentPosition() <= 865){
+                else if(gear.getCurrentPosition() > 800 && gear.getCurrentPosition() <= 875){
                     gearPower = 0.1;
                 }
                 else {
@@ -145,12 +145,18 @@ public class GearSubsystem {
     //------------------------------ Wheel Servo for Stack -------------------------------//
     public void white54() {
         gear.setPower(0);
-        wheelServo.setPosition(0.223); //higher # = claw pos higher //was .233
+        wheelServo.setPosition(0.22); //higher # = claw pos higher //was .233
     }
 
     public void white32() {
         gear.setPower(0);
-        wheelServo.setPosition(0.131); //.133
+        wheelServo.setPosition(0.125); //.133
+    }
+
+    public void purple() {
+        gear.setTargetPosition(gear.getCurrentPosition());
+        gear.setPower(0);
+        wheelServo.setPosition(0.2); //.133
     }
 
     public void wheelServo_Deactivated() {

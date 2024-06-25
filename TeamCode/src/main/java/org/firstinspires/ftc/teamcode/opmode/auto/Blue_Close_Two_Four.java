@@ -36,32 +36,32 @@ public class Blue_Close_Two_Four extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-36+72+16, 32+72+0.25, Math.toRadians(270)); //51
-    private Pose blueMiddleSpikeMark = new Pose(-30+72+17, 22+67.5+5, Math.toRadians(270));
-    private Pose blueRightSpikeMark = new Pose(-36+72+16, 8+72+4, Math.toRadians(270));
+    private Pose blueLeftSpikeMark = new Pose(52, 105, Math.toRadians(270)); //51
+    private Pose blueMiddleSpikeMark = new Pose(59, 94.5, Math.toRadians(270));
+    private Pose blueRightSpikeMark = new Pose(52, 82.75, Math.toRadians(270));
 
     //Backdrop zone locations
-    private Pose blueLeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
-    private Pose blueMiddleBackdrop = new Pose(30+12+7.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueRightBackdrop = new Pose(30+12+16.5, 117+1+3+0.5, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(30+10, 117+1+3.75+1.5, Math.toRadians(270));
-    private Pose blueWhiteBackdrop2 = new Pose(30+10, 117+1+3.75+1.5, Math.toRadians(270));
+    private Pose blueLeftBackdrop = new Pose(44, 122.75, Math.toRadians(270)); //117+1+3+0.5
+    private Pose blueMiddleBackdrop = new Pose(49.5, 122.75, Math.toRadians(270));
+    private Pose blueRightBackdrop = new Pose(57.5, 122.25, Math.toRadians(270));
+    private Pose blueWhiteBackdrop = new Pose(40, 122.25, Math.toRadians(270));
+    private Pose blueWhiteBackdrop2 = new Pose(40, 123.25, Math.toRadians(270));
 
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(12+13+1.5, 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(12+13+1.5, 36, Math.toRadians(270));
+    private Pose blueTopTruss = new Pose(27.5, 84, Math.toRadians(270)); //22
+    private Pose blueBottomTruss = new Pose(27.5, 36, Math.toRadians(270));
 
     // white pixel stack locations
-    private Pose blueLeftStack = new Pose(-36+72+14+12, -37+72, Math.toRadians(270));
-    private Pose blueMiddleStack = new Pose(-36+72+14+6, -37+72, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(36+9.5-1.25, 12.25, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(36+10-0.5, 13.25, Math.toRadians(270)); //47
+    private Pose blueLeftStack = new Pose(62, 35, Math.toRadians(270));
+    private Pose blueMiddleStack = new Pose(56, 35, Math.toRadians(270));
+    private Pose blueRightStack = new Pose(46, 11.5, Math.toRadians(270)); //47
+    private Pose blueRightStack2 = new Pose(46.5, 12.75, Math.toRadians(270)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
     // TODO: adjust this for each auto
-    private Pose startPose = new Pose(8.5, 12+72, 0);
+    private Pose startPose = new Pose(8.5, 84, 0);
 
     private Follower follower;
 
@@ -173,13 +173,14 @@ public class Blue_Close_Two_Four extends OpMode {
                 setPathState(11);
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 3) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.2) {
+                    gear.purple();
                     claw.openLClaw();
                     setPathState(12);
                 }
                 break;
             case 12:
-                if(!follower.isBusy()) {
+                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
                     setActionState(1);
                     follower.setMaxPower(0.5);
                     follower.followPath(initialScoreOnBackdrop);
@@ -187,8 +188,8 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 13:
+                claw.closeLClaw();
                 if (!follower.isBusy()) {
-                    claw.closeLClaw();
                     follower.holdPoint(new BezierPoint(initialScoreOnBackdrop.getLastControlPoint()), initialBackdropGoalPose.getHeading());
                     setPathState(14);
                 }
@@ -230,11 +231,17 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100201:
-                if(pathTimer.getElapsedTimeSeconds() > 2.2)
+                if(pathTimer.getElapsedTimeSeconds() > 1.5)
                 {
                     follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
                 }
-                if (pathTimer.getElapsedTimeSeconds() > 2.25) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.35) {
+                    claw.openClaws2();
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 2.55) {
+                    claw.openClaws1();
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 2.75) {
                     claw.openClaws();
                     setPathState(100203);
                 }
@@ -279,13 +286,18 @@ public class Blue_Close_Two_Four extends OpMode {
                 }
                 break;
             case 100204:
-                if(pathTimer.getElapsedTimeSeconds() > 2.3)
+                if(pathTimer.getElapsedTimeSeconds() > 1.5)
                 {
                     follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
                 }
                 if (pathTimer.getElapsedTimeSeconds() > 2.35) {
+                    claw.openClaws2();
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 2.55) {
+                    claw.openClaws1();
+                }
+                if (pathTimer.getElapsedTimeSeconds() > 2.75) {
                     claw.openClaws();
-                    setPathState(100202);
                 }
                 break;
             case 100202:
@@ -341,7 +353,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 break;
             case 3: //First cycle white stack grab
                 gear.stopGear();
-                gear.white54(); //148
+                gear.white54();
                 setClawState(3);
                 setActionState(-1);
                 break;
@@ -406,9 +418,6 @@ public class Blue_Close_Two_Four extends OpMode {
         switch (gearState) {
             case 0:
                 gear.startGear();
-                if (!gear.gear.isBusy()) {
-                    gear.white32();
-                }
                 break;
             case 1:
                 gear.scoringGear();
@@ -554,13 +563,6 @@ public class Blue_Close_Two_Four extends OpMode {
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
 
-        if (opmodeTimer.getElapsedTimeSeconds() > 4) {
-            telemetry.addData("Init", "Finished");
-        }
-
-
-        telemetry.update();
-
         gear.wheelServo_Deactivated();
         claw.closeClaws();
         claw.startClaw();
@@ -580,6 +582,10 @@ public class Blue_Close_Two_Four extends OpMode {
             if (blocks[i].x > 270 && blocks[i].id == 2) {
                 navigation = "right";
             }
+        }
+
+        if (opmodeTimer.getElapsedTimeSeconds() > 4) {
+            telemetry.addData("Init", "Finished");
         }
     }
 

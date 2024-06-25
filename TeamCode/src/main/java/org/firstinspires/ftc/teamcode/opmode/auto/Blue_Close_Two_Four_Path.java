@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.Follower;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.config.subsystem.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
-
+@Disabled
 @Autonomous(name = "Blue Close 2+4 Path", group = "Blue")
 public class Blue_Close_Two_Four_Path extends OpMode {
 
