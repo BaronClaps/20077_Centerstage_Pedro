@@ -91,6 +91,12 @@ public class GearSubsystem {
                 gear.setPower(1);
     }
 
+    public void scoringGearRED() {
+        gear.setTargetPosition(805);
+        gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        gear.setPower(1);
+    }
+
     public void whiteScoringGear() {
                 gear.setTargetPosition(865); //300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);

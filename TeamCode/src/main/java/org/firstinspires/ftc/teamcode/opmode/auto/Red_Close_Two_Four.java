@@ -36,32 +36,32 @@ public class Red_Close_Two_Four extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(-52+156, 105, Math.toRadians(270)); //51
-    private Pose blueMiddleSpikeMark = new Pose(-(59-72), 94.5, Math.toRadians(270));
-    private Pose blueRightSpikeMark = new Pose(-(52-72), 82.75, Math.toRadians(270));
+    private Pose blueLeftSpikeMark = new Pose(39.4, 45, Math.toRadians(90)); //51
+    private Pose blueMiddleSpikeMark = new Pose(48, 34.1, Math.toRadians(90));
+    private Pose blueRightSpikeMark = new Pose(39.4, 45.5, Math.toRadians(90));
 
     //Backdrop zone locations
-    private Pose blueLeftBackdrop = new Pose(-(44-144), 122.75, Math.toRadians(270)); //117+1+3+0.5
-    private Pose blueMiddleBackdrop = new Pose(-(49.5-72), 122.75, Math.toRadians(270));
-    private Pose blueRightBackdrop = new Pose(-(57.5-72), 122.25, Math.toRadians(270));
-    private Pose blueWhiteBackdrop = new Pose(-(40-72), 122.25, Math.toRadians(270));
-    private Pose blueWhiteBackdrop2 = new Pose(-(40-72), 123.25, Math.toRadians(270));
+    private Pose blueLeftBackdrop = new Pose(40, 9, Math.toRadians(90)); //117+1+3+0.5
+    private Pose blueMiddleBackdrop = new Pose(34.7, 15.75, Math.toRadians(90));
+    private Pose blueRightBackdrop = new Pose(28.6, 20.75, Math.toRadians(90));
+    private Pose blueWhiteBackdrop = new Pose(31, 21.5, Math.toRadians(90));
+    private Pose blueWhiteBackdrop2 = new Pose(31, 21.5, Math.toRadians(90));
 
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(-(27.5-72), 84, Math.toRadians(270)); //22
-    private Pose blueBottomTruss = new Pose(-(27.5-72), 36, Math.toRadians(270));
+    private Pose blueTopTruss = new Pose(10, 60, Math.toRadians(90)); //22
+    private Pose blueBottomTruss = new Pose(10, 108, Math.toRadians(90));
 
     // white pixel stack locations
-    private Pose blueLeftStack = new Pose(-(62-72), 35, Math.toRadians(270));
-    private Pose blueMiddleStack = new Pose(-(56-72), 35, Math.toRadians(270));
-    private Pose blueRightStack = new Pose(-(46-72), 11.5, Math.toRadians(270)); //47
-    private Pose blueRightStack2 = new Pose(-(46.5-72)+72, 12.75, Math.toRadians(270)); //47
+    private Pose blueLeftStack = new Pose(-(62-72), 35, Math.toRadians(90));
+    private Pose blueMiddleStack = new Pose(-(56-72), 35, Math.toRadians(90));
+    private Pose blueRightStack = new Pose(37.6, 117.5, Math.toRadians(90)); //47
+    private Pose blueRightStack2 = new Pose(37.6, 117.5, Math.toRadians(90)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
     // TODO: adjust this for each auto
-    private Pose startPose = new Pose(-(8.5-144), 84, Math.toRadians(180));
+    private Pose startPose = new Pose(8.5, 60, Math.toRadians(0));
 
     private Follower follower;
 
@@ -77,22 +77,22 @@ public class Red_Close_Two_Four extends OpMode {
         switch (navigation) {
             default:
             case "left":
-                spikeMarkGoalPose = new Pose(blueLeftSpikeMark.getX(), blueLeftSpikeMark.getY(), Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueLeftBackdrop.getX(), blueLeftBackdrop.getY(), Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueWhiteBackdrop.getX(), blueWhiteBackdrop.getY(), Math.toRadians(270));
-                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(-(8.5-144),80.5,Point.CARTESIAN), new Point(-(48-144),135,Point.CARTESIAN), new Point(blueLeftSpikeMark)));
+                spikeMarkGoalPose = new Pose(blueLeftSpikeMark.getX(), blueLeftSpikeMark.getY(), Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(blueLeftBackdrop.getX(), blueLeftBackdrop.getY(), Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(blueWhiteBackdrop.getX(), blueWhiteBackdrop.getY(), Math.toRadians(90));
+                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(8.5,35,Point.CARTESIAN), new Point(31.2,29.2,Point.CARTESIAN), new Point(blueLeftSpikeMark)));
 
                 break;
             case "middle":
-                spikeMarkGoalPose = new Pose(blueMiddleSpikeMark.getX(), blueMiddleSpikeMark.getY()+3, Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(),Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(), Math.toRadians(270));
+                spikeMarkGoalPose = new Pose(blueMiddleSpikeMark.getX(), blueMiddleSpikeMark.getY()+3, Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(),Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(), Math.toRadians(90));
                 scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(-(8.5-72),12+72+5,Point.CARTESIAN), new Point(-(-30+15),22+67.5+20+5,Point.CARTESIAN), new Point(blueMiddleSpikeMark)));
                 break;
             case "right":
-                spikeMarkGoalPose = new Pose(blueRightSpikeMark.getX(), blueRightSpikeMark.getY(), Math.toRadians(270));
-                initialBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(270));
-                firstCycleBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(270));
+                spikeMarkGoalPose = new Pose(blueRightSpikeMark.getX(), blueRightSpikeMark.getY(), Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(90));
                 scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(-(8.5-72),12+72+5,Point.CARTESIAN), new Point(-(-36+16),80+17+4,Point.CARTESIAN), new Point(blueRightSpikeMark)));
                 break;
         }
@@ -420,7 +420,7 @@ public class Red_Close_Two_Four extends OpMode {
                 gear.startGear();
                 break;
             case 1:
-                gear.scoringGear();
+                gear.scoringGearRED();
                 gear.wheelServo_Deactivated();
                 break;
             case 2:

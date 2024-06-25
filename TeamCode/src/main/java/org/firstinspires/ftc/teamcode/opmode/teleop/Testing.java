@@ -5,10 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.config.pedroPathing.localization.Pose;
+import org.firstinspires.ftc.teamcode.config.pedroPathing.pathGeneration.Vector;
+import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.Follower;
 
 @TeleOp(name="Testing")
 public class Testing extends LinearOpMode {
 
+    private Follower follower;
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor lF        = null; //c0
     private DcMotor rF        = null; //c1
@@ -26,6 +30,8 @@ public class Testing extends LinearOpMode {
     private double clawPosSpecial = 0.685;
     private double clawPos = groundClawPos;
     private double wheelServoPos;
+
+    private Pose startingPose = new Pose(8.5, 60, Math.toRadians(0));
     @Override
     public void runOpMode() {
         lF = hardwareMap.get(DcMotor.class, "lF");
@@ -56,7 +62,9 @@ public class Testing extends LinearOpMode {
         pivot.setPosition(.835);
         clawL.setPosition(.45);
         clawR.setPosition(.25);
+        follower = new Follower(hardwareMap, false);
 
+        follower.setPose(startingPose);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -120,17 +128,17 @@ public class Testing extends LinearOpMode {
 
             //----------------------------claw----------------------------\\
 //left
-            if (gamepad1.left_bumper) {
+            //if (gamepad1.left_bumper) {
                 clawL.setPosition(0.33);
-            } else {
-                clawL.setPosition(.42);
-            } //open
+            //} else {
+               // clawL.setPosition(.42);
+           // } //open
 //right
-            if (gamepad1.right_bumper) {
+            //if (gamepad1.right_bumper) {
                 clawR.setPosition(0.37);
-            } else {
-                clawR.setPosition(.28);
-            } //open
+            //} else {
+            //    clawR.setPosition(.28);
+            //} //open
 
             //-----------------------------Wheel Servo------------------------//
             if(gamepad1.right_stick_button) {
@@ -142,21 +150,12 @@ public class Testing extends LinearOpMode {
                 wheelServoPos -= 0.0005;
             }
 
-            if(gamepad1.right_trigger > 0.1)
-            {
-                wheelServoPos += 0.001;
-            }
-
-            if(gamepad1.left_trigger > 0.1)
-            {
-               wheelServoPos -= 0.001;
-            }
             WheelServo.setPosition(wheelServoPos);
 
             telemetry.addData("Wheel", wheelServoPos);
             //----------------------------lift/gear----------------------------\\
 
-           // lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //lift.setPower(1);
             gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //gear.setPower(0.5);
@@ -172,17 +171,22 @@ public class Testing extends LinearOpMode {
                 telemetry.addData("gear", gear.getCurrentPosition());
             }
 
-          /*  if (gamepad1.left_trigger > .1) {
+          if (gamepad1.left_trigger > .1) {
                 tfil(150, -1);
                 telemetry.addData("lift", lift.getCurrentPosition());}
             if (gamepad1.right_trigger > .1) {
                 tfil(200, 1);
-                telemetry.addData("lift", lift.getCurrentPosition());}*/
+                telemetry.addData("lift", lift.getCurrentPosition());}
 
 
 
             telemetry.addData("lift", lift.getCurrentPosition());
             telemetry.addData("gear", gear.getCurrentPosition());
+            telemetry.addData("X", follower.getPose().getX());
+            telemetry.addData("Y", follower.getPose().getY());
+            telemetry.addData("Heading", Math.toDegrees(follower.getPose().getHeading()));
+
+            follower.update();
             telemetry.update();
 
 
