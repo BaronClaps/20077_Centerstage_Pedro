@@ -86,7 +86,7 @@ public class GearSubsystem {
 
     //------------------------------Scoring Position------------------------------//
     public void scoringGear() {
-                gear.setTargetPosition(890);
+                gear.setTargetPosition(805);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(1);
     }
@@ -97,8 +97,54 @@ public class GearSubsystem {
         gear.setPower(1);
     }
 
+    public void scoringGearZone1() {
+        gear.setTargetPosition(745);
+        gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(gear.getCurrentPosition() <= 400) {
+            gearPower = 1;
+        } else if(gear.getCurrentPosition() > 400 && gear.getCurrentPosition() <= 500){
+            gearPower = 0.5;
+        }
+        else if(gear.getCurrentPosition() > 500 && gear.getCurrentPosition() <= 600){
+            gearPower = 0.4;
+        }
+        else if(gear.getCurrentPosition() > 600 && gear.getCurrentPosition() <= 700){
+            gearPower = 0.33;
+        }
+        else if(gear.getCurrentPosition() > 700 && gear.getCurrentPosition() <= 745){
+            gearPower = 0.1;
+        }
+        else {
+            gearPower = 0;
+        }
+        gear.setPower(gearPower);
+    }
+
+    public void scoringGear2Zone1() {
+        gear.setTargetPosition(735);
+        gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(gear.getCurrentPosition() <= 400) {
+            gearPower = 1;
+        } else if(gear.getCurrentPosition() > 400 && gear.getCurrentPosition() <= 500){
+            gearPower = 0.5;
+        }
+        else if(gear.getCurrentPosition() > 500 && gear.getCurrentPosition() <= 600){
+            gearPower = 0.4;
+        }
+        else if(gear.getCurrentPosition() > 600 && gear.getCurrentPosition() <= 700){
+            gearPower = 0.33;
+        }
+        else if(gear.getCurrentPosition() > 700 && gear.getCurrentPosition() <= 735){
+            gearPower = 0.1;
+        }
+        else {
+            gearPower = 0;
+        }
+        gear.setPower(gearPower);
+    }
+
     public void whiteScoringGear() {
-                gear.setTargetPosition(865); //300
+                gear.setTargetPosition(875); //300
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                if(gear.getCurrentPosition() <= 500) {
                     gearPower = 1;
@@ -121,10 +167,6 @@ public class GearSubsystem {
             }
 
     //------------------------------Start Position-------------------------------//
-    public void startGear() {
-                gear.setPower(0);
-                white32();
-    }
 
     //------------------------------End Position-------------------------------//
     public void scoringGearDown() {
@@ -151,18 +193,17 @@ public class GearSubsystem {
     //------------------------------ Wheel Servo for Stack -------------------------------//
     public void white54() {
         gear.setPower(0);
-        wheelServo.setPosition(0.22); //higher # = claw pos higher //was .233
+        wheelServo.setPosition(0.228); //higher # = claw pos higher //was .233
     }
 
     public void white32() {
         gear.setPower(0);
-        wheelServo.setPosition(0.125); //.133
+        wheelServo.setPosition(0.133); //.133
     }
 
     public void purple() {
-        gear.setTargetPosition(gear.getCurrentPosition());
         gear.setPower(0);
-        wheelServo.setPosition(0.2); //.133
+        wheelServo.setPosition(0.15); //.133
     }
 
     public void wheelServo_Deactivated() {

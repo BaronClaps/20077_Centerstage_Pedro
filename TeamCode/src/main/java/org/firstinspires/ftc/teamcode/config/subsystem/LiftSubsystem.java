@@ -47,7 +47,7 @@ public class LiftSubsystem {
     //------------------------------ Lift Extend ------------------------------//
     public void liftExtend_Scoring() {
                 //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition(1250);//1150
+                lift.setTargetPosition(1150);//1150
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(1);
     }

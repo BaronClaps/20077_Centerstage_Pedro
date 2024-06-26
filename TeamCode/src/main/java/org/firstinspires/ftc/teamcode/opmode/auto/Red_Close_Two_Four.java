@@ -36,27 +36,26 @@ public class Red_Close_Two_Four extends OpMode {
 
 
     //Spike mark locations
-    private Pose blueLeftSpikeMark = new Pose(39.4, 45, Math.toRadians(90)); //51
-    private Pose blueMiddleSpikeMark = new Pose(48, 34.1, Math.toRadians(90));
-    private Pose blueRightSpikeMark = new Pose(39.4, 45.5, Math.toRadians(90));
+    private Pose LeftSpikeMark = new Pose(39.4, 45.5, Math.toRadians(90)); //51
+    private Pose MiddleSpikeMark = new Pose(46.5, 34.1, Math.toRadians(90));
+    private Pose RightSpikeMark = new Pose(39.4, 24, Math.toRadians(90));
 
     //Backdrop zone locations
-    private Pose blueLeftBackdrop = new Pose(40, 9, Math.toRadians(90)); //117+1+3+0.5
-    private Pose blueMiddleBackdrop = new Pose(34.7, 15.75, Math.toRadians(90));
-    private Pose blueRightBackdrop = new Pose(28.6, 20.75, Math.toRadians(90));
-    private Pose blueWhiteBackdrop = new Pose(31, 21.5, Math.toRadians(90));
-    private Pose blueWhiteBackdrop2 = new Pose(31, 21.5, Math.toRadians(90));
-
+    private Pose LeftBackdrop = new Pose(39, 8.25, Math.toRadians(90)); //117+1+3+0.5
+    private Pose MiddleBackdrop = new Pose(35, 8.25, Math.toRadians(90));
+    private Pose RightBackdrop = new Pose(26, 8.25, Math.toRadians(90));
+    private Pose WhiteBackdrop = new Pose(33, 6.25, Math.toRadians(90));
+    private Pose WhiteBackdrop2 = new Pose(33, 6.25, Math.toRadians(90));
 
     //Through Truss
-    private Pose blueTopTruss = new Pose(10, 60, Math.toRadians(90)); //22
-    private Pose blueBottomTruss = new Pose(10, 108, Math.toRadians(90));
+    private Pose TopTruss = new Pose(12.75, 42, Math.toRadians(90)); //22
+    private Pose BottomTruss = new Pose(12.75, 96, Math.toRadians(90));
 
     // white pixel stack locations
-    private Pose blueLeftStack = new Pose(-(62-72), 35, Math.toRadians(90));
-    private Pose blueMiddleStack = new Pose(-(56-72), 35, Math.toRadians(90));
-    private Pose blueRightStack = new Pose(37.6, 117.5, Math.toRadians(90)); //47
-    private Pose blueRightStack2 = new Pose(37.6, 117.5, Math.toRadians(90)); //47
+    private Pose Stack = new Pose(37, 117, Math.toRadians(90)); //47
+    private Pose Stack2 = new Pose(37, 116.25, Math.toRadians(90)); //47
+    private Pose StackZone1 = new Pose(33.5, 117, Math.toRadians(90)); //47
+    private Pose Stack2Zone1 = new Pose(34, 116, Math.toRadians(90)); //47
 
     private Pose spikeMarkGoalPose, initialBackdropGoalPose, firstCycleStackPose, firstCycleBackdropGoalPose, secondCycleStackPose, secondCycleBackdropGoalPose;
 
@@ -65,10 +64,8 @@ public class Red_Close_Two_Four extends OpMode {
 
     private Follower follower;
 
-    private Point blueWhiteBackdropPoint;
-
     private Path scoreSpikeMark, initialScoreOnBackdrop, scoreSpikeMarkChosen;
-    private PathChain cycleStackTo, cycleStackTo2, cycleStackBack, cycleStackBack2, cycleStackToBezier, cycleStackBackBezier;
+    private PathChain cycleStackTo, cycleStackTo2, cycleStackBack, cycleStackBack2, cycleStackToBezier, cycleStackBackZone1, cycleStackBackBezier, cycleStackToZone1, cycleStackTo2Zone1;
 
     private int pathState, actionState, clawState, gearState, liftState;
 
@@ -77,23 +74,23 @@ public class Red_Close_Two_Four extends OpMode {
         switch (navigation) {
             default:
             case "left":
-                spikeMarkGoalPose = new Pose(blueLeftSpikeMark.getX(), blueLeftSpikeMark.getY(), Math.toRadians(90));
-                initialBackdropGoalPose = new Pose(blueLeftBackdrop.getX(), blueLeftBackdrop.getY(), Math.toRadians(90));
-                firstCycleBackdropGoalPose = new Pose(blueWhiteBackdrop.getX(), blueWhiteBackdrop.getY(), Math.toRadians(90));
-                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(8.5,35,Point.CARTESIAN), new Point(31.2,29.2,Point.CARTESIAN), new Point(blueLeftSpikeMark)));
+                spikeMarkGoalPose = new Pose(LeftSpikeMark.getX(), LeftSpikeMark.getY(), Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(LeftBackdrop.getX(), LeftBackdrop.getY(), Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(WhiteBackdrop.getX(), WhiteBackdrop.getY(), Math.toRadians(90));
+                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(8.5,35,Point.CARTESIAN), new Point(31.2,29.2,Point.CARTESIAN), new Point(LeftSpikeMark)));
 
                 break;
             case "middle":
-                spikeMarkGoalPose = new Pose(blueMiddleSpikeMark.getX(), blueMiddleSpikeMark.getY()+3, Math.toRadians(90));
-                initialBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(),Math.toRadians(90));
-                firstCycleBackdropGoalPose = new Pose(blueMiddleBackdrop.getX(), blueMiddleBackdrop.getY(), Math.toRadians(90));
-                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(-(8.5-72),12+72+5,Point.CARTESIAN), new Point(-(-30+15),22+67.5+20+5,Point.CARTESIAN), new Point(blueMiddleSpikeMark)));
+                spikeMarkGoalPose = new Pose(MiddleSpikeMark.getX(), MiddleSpikeMark.getY()+3, Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(MiddleBackdrop.getX(), MiddleBackdrop.getY(),Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(MiddleBackdrop.getX(), MiddleBackdrop.getY(), Math.toRadians(90));
+                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(startPose.getX(),48,Point.CARTESIAN), new Point(MiddleSpikeMark.getX(),35,Point.CARTESIAN), new Point(MiddleSpikeMark)));
                 break;
             case "right":
-                spikeMarkGoalPose = new Pose(blueRightSpikeMark.getX(), blueRightSpikeMark.getY(), Math.toRadians(90));
-                initialBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(90));
-                firstCycleBackdropGoalPose = new Pose(blueRightBackdrop.getX(), blueRightBackdrop.getY(), Math.toRadians(90));
-                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(-(8.5-72),12+72+5,Point.CARTESIAN), new Point(-(-36+16),80+17+4,Point.CARTESIAN), new Point(blueRightSpikeMark)));
+                spikeMarkGoalPose = new Pose(RightSpikeMark.getX(), RightSpikeMark.getY(), Math.toRadians(90));
+                initialBackdropGoalPose = new Pose(RightBackdrop.getX(), RightBackdrop.getY(), Math.toRadians(90));
+                firstCycleBackdropGoalPose = new Pose(RightBackdrop.getX(), RightBackdrop.getY(), Math.toRadians(90));
+                scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(startPose.getX(),36,Point.CARTESIAN), new Point(RightSpikeMark.getX(),24,Point.CARTESIAN), new Point(RightSpikeMark)));
                 break;
         }
     }
@@ -107,61 +104,93 @@ public class Red_Close_Two_Four extends OpMode {
         initialScoreOnBackdrop.setLinearHeadingInterpolation(spikeMarkGoalPose.getHeading(), initialBackdropGoalPose.getHeading());
         initialScoreOnBackdrop.setPathEndTimeoutConstraint(0);
 
-        blueWhiteBackdropPoint = new Point(blueWhiteBackdrop);
-
         cycleStackTo = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(blueTopTruss)))
+                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(TopTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueBottomTruss)))
+                .addPath(new BezierLine(new Point(TopTruss), new Point(BottomTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(blueRightStack)))
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(12, 144-24, Point.CARTESIAN), new Point(30,95,Point.CARTESIAN), new Point(Stack)))
+               // .addPath(new BezierLine(new Point(BottomTruss), new Point(Stack)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackTo2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(blueTopTruss)))
+                .addPath(new BezierLine(new Point(WhiteBackdrop), new Point(TopTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueBottomTruss)))
+                .addPath(new BezierLine(new Point(TopTruss), new Point(BottomTruss)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(12+13+1, 12.5, Point.CARTESIAN), new Point(36+12+1,36,Point.CARTESIAN), new Point(blueRightStack2)))
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(12, 144-24, Point.CARTESIAN), new Point(30,95,Point.CARTESIAN), new Point(Stack2)))
+                //.addPath(new BezierLine(new Point(BottomTruss), new Point(Stack2)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .setPathEndTimeoutConstraint(0)
+                .build();
+
+        cycleStackToZone1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(initialBackdropGoalPose), new Point(TopTruss)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .addPath(new BezierLine(new Point(TopTruss), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(12, 144-24, Point.CARTESIAN), new Point(28.5,95,Point.CARTESIAN), new Point(StackZone1)))
+                // .addPath(new BezierLine(new Point(BottomTruss), new Point(Stack)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .setPathEndTimeoutConstraint(0)
+                .build();
+
+        cycleStackTo2Zone1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(WhiteBackdrop), new Point(TopTruss)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .addPath(new BezierLine(new Point(TopTruss), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(12, 144-24, Point.CARTESIAN), new Point(28.5,95,Point.CARTESIAN), new Point(Stack2Zone1)))
+                //.addPath(new BezierLine(new Point(BottomTruss), new Point(Stack2)))
                 .setConstantHeadingInterpolation(firstCycleBackdropGoalPose.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackBack = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueRightStack), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueBottomTruss), new Point(blueTopTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueWhiteBackdrop)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(Stack), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(BottomTruss), new Point(TopTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(TopTruss), new Point(WhiteBackdrop)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .setPathEndTimeoutConstraint(0)
+                .build();
+
+        cycleStackBackZone1 = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(StackZone1), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(BottomTruss), new Point(TopTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(TopTruss), new Point(WhiteBackdrop)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackBack2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(blueRightStack2), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueBottomTruss), new Point(blueTopTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierLine(new Point(blueTopTruss), new Point(blueWhiteBackdrop2)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop2.getHeading())
+                .addPath(new BezierLine(new Point(Stack2), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(BottomTruss), new Point(TopTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierLine(new Point(TopTruss), new Point(WhiteBackdrop2)))
+                .setConstantHeadingInterpolation(WhiteBackdrop2.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackToBezier = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(initialBackdropGoalPose), new Point(30+14,91.6, Point.CARTESIAN), new Point(13+14, 130.8, Point.CARTESIAN), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(20.5+14,10, Point.CARTESIAN), new Point(42+14,35, Point.CARTESIAN), new Point(blueRightStack)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(initialBackdropGoalPose), new Point(30+14,91.6, Point.CARTESIAN), new Point(13+14, 130.8, Point.CARTESIAN), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(20.5+14,10, Point.CARTESIAN), new Point(42+14,35, Point.CARTESIAN), new Point(Stack)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
 
         cycleStackBackBezier = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(blueRightStack), new Point(42+14,35, Point.CARTESIAN), new Point(20.5+14,10, Point.CARTESIAN), new Point(blueBottomTruss)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
-                .addPath(new BezierCurve(new Point(blueBottomTruss), new Point(13+14, 130.8, Point.CARTESIAN), new Point(30+14,91.6, Point.CARTESIAN), new Point(blueWhiteBackdrop)))
-                .setConstantHeadingInterpolation(blueWhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(Stack), new Point(42+14,35, Point.CARTESIAN), new Point(20.5+14,10, Point.CARTESIAN), new Point(BottomTruss)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
+                .addPath(new BezierCurve(new Point(BottomTruss), new Point(13+14, 130.8, Point.CARTESIAN), new Point(30+14,91.6, Point.CARTESIAN), new Point(WhiteBackdrop)))
+                .setConstantHeadingInterpolation(WhiteBackdrop.getHeading())
                 .setPathEndTimeoutConstraint(0)
                 .build();
     }
@@ -173,22 +202,23 @@ public class Red_Close_Two_Four extends OpMode {
                 setPathState(11);
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 2.2) {
-                    gear.purple();
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
                     claw.openLClaw();
                     setPathState(12);
                 }
                 break;
             case 12:
-                if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    setActionState(1);
                     follower.setMaxPower(0.5);
                     follower.followPath(initialScoreOnBackdrop);
+                    setPathState(20102019);
+                break;
+            case 20102019:
+                if(pathTimer.getElapsedTimeSeconds() > 0.4) {
+                    claw.closeLClaw();
+                    setActionState(1);
                     setPathState(13);
                 }
-                break;
             case 13:
-                claw.closeLClaw();
                 if (!follower.isBusy()) {
                     follower.holdPoint(new BezierPoint(initialScoreOnBackdrop.getLastControlPoint()), initialBackdropGoalPose.getHeading());
                     setPathState(14);
@@ -198,14 +228,19 @@ public class Red_Close_Two_Four extends OpMode {
                 if (pathTimer.getElapsedTimeSeconds() > 0) {
                     claw.openRClaw();
                 }
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.3) {
                     setActionState(2);
                     setPathState(15);
                 }
                 break;
             case 15:
-                follower.setMaxPower(0.75);
-                follower.followPath(cycleStackTo, true);
+                follower.setMaxPower(0.7);
+                if(navigation == "left") {
+                    follower.followPath(cycleStackToZone1, true);
+                }
+                else {
+                    follower.followPath(cycleStackTo, true);
+                }
 
                 if(pathTimer.getElapsedTimeSeconds() > 0.5) {
                     setActionState(3);
@@ -213,27 +248,37 @@ public class Red_Close_Two_Four extends OpMode {
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 6) {
+                if (pathTimer.getElapsedTimeSeconds() > 5.5) {
                     claw.closeClaws();
                     setPathState(17);
                 }
                 break;
             case 17:
-                initialBackdropGoalPose = blueWhiteBackdrop;
+                initialBackdropGoalPose = WhiteBackdrop;
                 follower.setMaxPower(0.65);
-                follower.followPath(cycleStackBack, true);
+                if(navigation == "left") {
+                    follower.followPath(cycleStackBackZone1, true);
+                }
+                else {
+                    follower.followPath(cycleStackBack, true);
+                }
                 setPathState(18);
                 break;
             case 18:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
-                    setActionState(4);
+                if (pathTimer.getElapsedTimeSeconds() > 3) {
+                    if(navigation == "left") {
+                        setActionState(8);
+                    } else {
+                        setActionState(4);
+                    }
                     setPathState(100201);
                 }
                 break;
             case 100201:
                 if(pathTimer.getElapsedTimeSeconds() > 1.5)
                 {
-                    follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
+                    follower.setMaxPower(0.5);
+                    follower.holdPoint(new BezierPoint(new Point(WhiteBackdrop)), WhiteBackdrop.getHeading());
                 }
                 if (pathTimer.getElapsedTimeSeconds() > 2.35) {
                     claw.openClaws2();
@@ -254,8 +299,13 @@ public class Red_Close_Two_Four extends OpMode {
                 break;
             case 19:
                 if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    follower.setMaxPower(0.75);
-                    follower.followPath(cycleStackTo2, true);
+                    follower.setMaxPower(0.7);
+                    if(navigation == "left") {
+                        follower.followPath(cycleStackTo2Zone1, true);
+                    }
+                    else {
+                        follower.followPath(cycleStackTo2, true);
+                    }
                     setPathState(20);
                 }
                 break;
@@ -272,23 +322,33 @@ public class Red_Close_Two_Four extends OpMode {
                 break;
             case 21:
                 if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    initialBackdropGoalPose = blueWhiteBackdrop;
-                    follower.setMaxPower(0.65);
-                    follower.followPath(cycleStackBack, true);
+                    initialBackdropGoalPose = WhiteBackdrop;
+                    follower.setMaxPower(0.75);
+                    if(navigation == "left") {
+                        follower.followPath(cycleStackBackZone1, true);
+                    }
+                    else {
+                        follower.followPath(cycleStackBack, true);
+                    }
                     setActionState(3);
                     setPathState(22);
                 }
                 break;
             case 22:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
-                    setActionState(4);
+                if (pathTimer.getElapsedTimeSeconds() > 2.75) {
+                    follower.setMaxPower(0.65);
+                    if(navigation == "left") {
+                        setActionState(8);
+                    } else {
+                        setActionState(4);
+                    }
                     setPathState(100204);
                 }
                 break;
             case 100204:
                 if(pathTimer.getElapsedTimeSeconds() > 1.5)
                 {
-                    follower.holdPoint(new BezierPoint(new Point(blueWhiteBackdrop)), blueWhiteBackdrop.getHeading());
+                    follower.holdPoint(new BezierPoint(new Point(WhiteBackdrop)), WhiteBackdrop.getHeading());
                 }
                 if (pathTimer.getElapsedTimeSeconds() > 2.35) {
                     claw.openClaws2();
@@ -380,6 +440,11 @@ public class Red_Close_Two_Four extends OpMode {
                 setClawState(0);
                 setActionState(-1);
                 break;
+            case 8:
+                setGearState(7);
+                setClawState(1);
+                setLiftState(1);
+                setActionState(-1);
         }
     }
 
@@ -417,28 +482,41 @@ public class Red_Close_Two_Four extends OpMode {
     public void gearUpdate() {
         switch (gearState) {
             case 0:
-                gear.startGear();
+                gear.purple();
+                setGearState(-1);
                 break;
             case 1:
                 gear.scoringGearRED();
                 gear.wheelServo_Deactivated();
+                setGearState(-1);
+
                 break;
             case 2:
                 gear.scoringGearDown();
+                setGearState(-1);
+
                 break;
             case 3:
                 gear.whiteScoringGear();
+                setGearState(-1);
+
                 break;
             case 4:
                 gear.whiteScoringGearDown();
+                setGearState(-1);
                 break;
             case 5:
                 gear.stopGear();
+                setGearState(-1);
                 break;
             case 6:
                 gear.wheelServo_Deactivated();
                 gear.whiteScoringGearDown();
+                setGearState(-1);
                 break;
+            case 7:
+                gear.scoringGearZone1();
+                setGearState(-1);
         }
     }
 
@@ -464,7 +542,7 @@ public class Red_Close_Two_Four extends OpMode {
                 break;
             case 3:
                 lift.liftExtend_WhiteScoring();
-                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 1000)) {
+                if((!lift.lift.isBusy()) && (lift.lift.getCurrentPosition() > 1150)) {
                     lift.lift.setPower(0);
                     setLiftState(-1);
                 }
@@ -576,13 +654,14 @@ public class Red_Close_Two_Four extends OpMode {
             if (blocks[i].x <= 100 && blocks[i].id == 1) {
                 navigation = "left";
             }
-            if (blocks[i].x > 100 && blocks[i].x <= 270 && blocks[i].id == 1) {
+            if (blocks[i].x > 100 && blocks[i].x < 210 && blocks[i].id == 1) {
                 navigation = "middle";
             }
-            if (blocks[i].x > 270 && blocks[i].id == 1) {
+            if (blocks[i].x >= 210 && blocks[i].id == 1) {
                 navigation = "right";
             }
         }
+        telemetry.addData("Navigation", navigation);
 
         if (opmodeTimer.getElapsedTimeSeconds() > 4) {
             telemetry.addData("Init", "Finished");
