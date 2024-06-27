@@ -41,9 +41,9 @@ public class Blue_Close_Two_Four extends OpMode {
     private Pose RightSpikeMark = new Pose(52, 82.75, Math.toRadians(270));
 
     //Backdrop zone locations
-    private Pose LeftBackdrop = new Pose(44, 122.75, Math.toRadians(270)); //117+1+3+0.5
-    private Pose MiddleBackdrop = new Pose(49.5, 122.75, Math.toRadians(270));
-    private Pose RightBackdrop = new Pose(58, 122.25, Math.toRadians(270));
+    private Pose LeftBackdrop = new Pose(44, 121.75, Math.toRadians(270)); //117+1+3+0.5
+    private Pose MiddleBackdrop = new Pose(49.5, 121.75, Math.toRadians(270));
+    private Pose RightBackdrop = new Pose(58, 121.25, Math.toRadians(270));
     private Pose WhiteBackdrop = new Pose(40, 122.25, Math.toRadians(270));
     private Pose WhiteBackdrop2 = new Pose(40, 122.75, Math.toRadians(270));
 
@@ -171,7 +171,7 @@ public class Blue_Close_Two_Four extends OpMode {
                 setPathState(11);
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.6) {
                     claw.openLClaw();
                     setPathState(12);
                 }

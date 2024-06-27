@@ -38,7 +38,6 @@ public class Drive extends LinearOpMode {
 
         lF.setDirection(DcMotor.Direction.REVERSE);
         lB.setDirection(DcMotor.Direction.REVERSE);
-        lift.setDirection(DcMotor.Direction.REVERSE);
         gear.setDirection(DcMotor.Direction.REVERSE);
         //gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -218,7 +217,11 @@ public class Drive extends LinearOpMode {
 
 
             if (gamepad1.x) {gear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); }
+                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            }
 
 
             /**lift encoder should never be above 2800
