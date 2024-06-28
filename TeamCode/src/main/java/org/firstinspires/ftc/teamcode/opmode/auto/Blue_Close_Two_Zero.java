@@ -23,7 +23,8 @@ import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
 public class Blue_Close_Two_Zero extends OpMode {
 
     private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
-    private String navigation;
+    //The line below sets what auto you want to run
+    private String navigation = "left";
     public ClawSubsystem claw;
     public GearSubsystem gear;
     public LiftSubsystem lift;

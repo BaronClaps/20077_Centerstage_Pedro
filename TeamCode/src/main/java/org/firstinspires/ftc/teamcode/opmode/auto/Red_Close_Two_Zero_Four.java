@@ -26,7 +26,8 @@ import java.util.concurrent.TimeUnit;
 public class Red_Close_Two_Zero_Four extends OpMode {
 
     private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
-    private String navigation;
+    //The line below sets what auto you want to run
+    private String navigation = "left";
     public ClawSubsystem claw;
     public GearSubsystem gear;
     public LiftSubsystem lift;
