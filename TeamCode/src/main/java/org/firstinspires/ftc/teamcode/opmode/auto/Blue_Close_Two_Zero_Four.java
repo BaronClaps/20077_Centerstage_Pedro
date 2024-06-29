@@ -18,10 +18,11 @@ import org.firstinspires.ftc.teamcode.config.subsystem.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
+import org.firstinspires.ftc.teamcode.config.subsystem.HuskyledSubsystem;
 
 @Autonomous(name = "Blue Close 2+0+4", group = "Blue")
 public class Blue_Close_Two_Zero_Four extends OpMode {
-    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
+    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer, huskyTimer;
     //The line below sets what auto you want to run
     private String navigation = "left";
     public ClawSubsystem claw;
@@ -29,13 +30,13 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
     public LiftSubsystem lift;
     public PresetSubsystem presets;
     private HuskyLens huskyLens;
-
+    public HuskyledSubsystem huskyled;
 
 
     //Spike mark locations
     private Pose LeftSpikeMark = new Pose(-36+72+16, 32+72+0.25, Math.toRadians(270)); //51
     private Pose MiddleSpikeMark = new Pose(-30+72+17, 22+67.5+5, Math.toRadians(270));
-    private Pose RightSpikeMark = new Pose(-36+72+16, 8+72+4, Math.toRadians(270));
+    private Pose RightSpikeMark = new Pose(-36+72+16, 8+72+3, Math.toRadians(270));
 
     //Backdrop zone locations
     private Pose LeftBackdrop = new Pose(30+12+2, 117+1+3+0.5, Math.toRadians(270)); //41
@@ -511,8 +512,12 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
         opmodeTimer = new Timer();
         liftTimer = new Timer();
 
+        huskyTimer = new Timer();
+
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
+
+        huskyled = new HuskyledSubsystem(hardwareMap);
 
         claw = new ClawSubsystem(hardwareMap);
         gear = new GearSubsystem(hardwareMap);
@@ -527,22 +532,42 @@ public class Blue_Close_Two_Zero_Four extends OpMode {
         gear.wheelServo_Deactivated();
         claw.closeClaws();
         claw.startClaw();
+
+        huskyled.offLed();
+
     }
 
     @Override
     public void init_loop() {
+
+        if (huskyTimer.getElapsedTimeSeconds() > 3 ) {
+            huskyTimer.resetTimer();
+        }
+        if (huskyTimer.getElapsedTimeSeconds() > 2) {
+            huskyled.offLed();
+            return;
+        }
+
+        huskyled.onLed();
+
         HuskyLens.Block[] blocks = huskyLens.blocks();
         for (int i = 0; i < blocks.length; i++) {
             //----------------------------1----------------------------\\
             if (blocks[i].x <= 100 && blocks[i].id == 2) {
                 navigation = "left";
             }
-            if (blocks[i].x > 100 && blocks[i].x <= 270 && blocks[i].id == 2) {
+            else if (blocks[i].x > 100 && blocks[i].x <= 270 && blocks[i].id == 2) {
                 navigation = "middle";
             }
-            if (blocks[i].x > 270 && blocks[i].id == 2) {
+            else if (blocks[i].x > 270 && blocks[i].id == 2) {
                 navigation = "right";
             }
+
+            else {
+                navigation = "left";
+            }
+
+
         }
     }
 

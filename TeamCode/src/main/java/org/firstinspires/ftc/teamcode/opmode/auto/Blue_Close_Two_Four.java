@@ -80,7 +80,6 @@ public class Blue_Close_Two_Four extends OpMode {
                 initialBackdropGoalPose = new Pose(LeftBackdrop.getX(), LeftBackdrop.getY(), Math.toRadians(270));
                 firstCycleBackdropGoalPose = new Pose(WhiteBackdrop.getX(), WhiteBackdrop.getY(), Math.toRadians(270));
                 scoreSpikeMarkChosen = new Path(new BezierCurve(new Point(startPose), new Point(8.5,80.5,Point.CARTESIAN), new Point(48,135,Point.CARTESIAN), new Point(LeftSpikeMark)));
-
                 break;
             case "middle":
                 spikeMarkGoalPose = new Pose(MiddleSpikeMark.getX(), MiddleSpikeMark.getY()+3, Math.toRadians(270));
@@ -262,6 +261,7 @@ public class Blue_Close_Two_Four extends OpMode {
                     setActionState(6);
                     setPathState(201101);
                 }
+                break;
             case 201101:
                 if (pathTimer.getElapsedTimeSeconds() > 3.3) {
                     claw.closeClaws();
@@ -303,6 +303,7 @@ public class Blue_Close_Two_Four extends OpMode {
                     setActionState(5);
                     setPathState(26);
                 }
+                break;
            /* case 23:
                 if(!follower.isBusy()) {
                     follower.followPath(cycleStackTo, true);

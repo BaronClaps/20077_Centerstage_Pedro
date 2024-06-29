@@ -86,7 +86,7 @@ public class GearSubsystem {
 
     //------------------------------Scoring Position------------------------------//
     public void scoringGear() {
-                gear.setTargetPosition(935);
+                gear.setTargetPosition(900);
                 gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gear.setPower(1);
     }

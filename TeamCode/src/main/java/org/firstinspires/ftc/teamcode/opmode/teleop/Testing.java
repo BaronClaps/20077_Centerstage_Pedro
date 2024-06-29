@@ -154,7 +154,6 @@ public class Testing extends LinearOpMode {
 
             telemetry.addData("Wheel", wheelServoPos);
             //----------------------------lift/gear----------------------------\\
-
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //lift.setPower(1);
             gear.setMode(DcMotor.RunMode.RUN_TO_POSITION);

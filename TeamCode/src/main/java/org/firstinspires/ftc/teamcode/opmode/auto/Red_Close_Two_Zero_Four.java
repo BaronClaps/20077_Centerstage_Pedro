@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.config.pedroPathing.follower.Follower;
@@ -19,13 +19,14 @@ import org.firstinspires.ftc.teamcode.config.subsystem.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.GearSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.LiftSubsystem;
 import org.firstinspires.ftc.teamcode.config.subsystem.PresetSubsystem;
+import org.firstinspires.ftc.teamcode.config.subsystem.HuskyledSubsystem;
 
 import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Red Close 2+0+4", group = "Red")
 public class Red_Close_Two_Zero_Four extends OpMode {
 
-    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer;
+    private Timer pathTimer, actionTimer, opmodeTimer, scanTimer, liftTimer, huskyTimer;
     //The line below sets what auto you want to run
     private String navigation = "left";
     public ClawSubsystem claw;
@@ -33,17 +34,17 @@ public class Red_Close_Two_Zero_Four extends OpMode {
     public LiftSubsystem lift;
     public PresetSubsystem presets;
     private HuskyLens huskyLens;
-
+    public HuskyledSubsystem huskyled;
 
 
     //Spike mark locations
-    private Pose LeftSpikeMark = new Pose(39.4, 45.25, Math.toRadians(90)); //51
-    private Pose MiddleSpikeMark = new Pose(45.8, 34.1, Math.toRadians(90));
-    private Pose RightSpikeMark = new Pose(39.4, 26.3, Math.toRadians(90));
+    private Pose LeftSpikeMark = new Pose(39.4, 44.75, Math.toRadians(90)); //51
+    private Pose MiddleSpikeMark = new Pose(43.5, 34.1, Math.toRadians(90));
+    private Pose RightSpikeMark = new Pose(39.4, 23, Math.toRadians(90));
 
     //Backdrop zone locations
     private Pose LeftBackdrop = new Pose(39, 8.25, Math.toRadians(90)); //117+1+3+0.5
-    private Pose MiddleBackdrop = new Pose(35, 8.25, Math.toRadians(90));
+    private Pose MiddleBackdrop = new Pose(33.5, 8.25, Math.toRadians(90));
     private Pose RightBackdrop = new Pose(26, 8.25, Math.toRadians(90));
     private Pose WhiteBackstage = new Pose(12.75, 8.25, Math.toRadians(90));
 
@@ -274,12 +275,12 @@ public class Red_Close_Two_Zero_Four extends OpMode {
                 break;
             case 18:
                 if (navigation == "left") {
-                    if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 2.7) {
                         setActionState(8);
                         setPathState(100201);
                     }
                 } else {
-                    if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 2.7) {
                         setActionState(8);
                         setPathState(100201);
                     }
@@ -345,12 +346,12 @@ public class Red_Close_Two_Zero_Four extends OpMode {
                 break;
             case 22:
                 if (navigation == "left") {
-                    if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 2.7) {
                         setActionState(8);
                         setPathState(100204);
                     }
                 } else {
-                    if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    if (pathTimer.getElapsedTimeSeconds() > 2.7) {
                         setActionState(8);
                         setPathState(100204);
                     }
@@ -643,10 +644,15 @@ public class Red_Close_Two_Zero_Four extends OpMode {
         opmodeTimer = new Timer();
         liftTimer = new Timer();
 
+        huskyTimer = new Timer();
+
         opmodeTimer.resetTimer();
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
+
+
+        huskyled = new HuskyledSubsystem(hardwareMap);
 
         claw = new ClawSubsystem(hardwareMap);
         gear = new GearSubsystem(hardwareMap);
@@ -658,10 +664,23 @@ public class Red_Close_Two_Zero_Four extends OpMode {
         gear.wheelServo_Deactivated();
         claw.closeClaws();
         claw.startClaw();
+
+        huskyled.offLed();
     }
 
     @Override
     public void init_loop() {
+
+        if (huskyTimer.getElapsedTimeSeconds() > 3 ) {
+            huskyTimer.resetTimer();
+        }
+        if (huskyTimer.getElapsedTimeSeconds() > 2) {
+            huskyled.offLed();
+            return;
+        }
+
+        huskyled.onLed();
+
         HuskyLens.Block[] blocks = huskyLens.blocks();
         for (int i = 0; i < blocks.length; i++) {
             //----------------------------1----------------------------\\
